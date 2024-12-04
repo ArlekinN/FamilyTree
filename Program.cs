@@ -10,7 +10,7 @@ namespace FamilyTree
         {
             Initialization.InitializationData();
 
-            Application.Run(new MainForm());
+            Application.Run(new Presentation.MainForm());
         }
     }
 }

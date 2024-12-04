@@ -5,7 +5,7 @@ namespace FamilyTree.Presentation
 {
     public partial class CreatePersonForm : Form
     {
-        private MainForm _mainForm;
+        private readonly MainForm _mainForm;
         public CreatePersonForm(MainForm mainForm)
         {
             InitializeComponent();
@@ -29,7 +29,6 @@ namespace FamilyTree.Presentation
                 gender = "Женщина";
             }
             string birthday = dateTimePickerBirthday.Value.Date.ToString("yyyy-MM-dd");
-            System.Diagnostics.Debug.WriteLine(birthday);
             if (!string.IsNullOrEmpty(lastname) && !string.IsNullOrEmpty(firstname) && !string.IsNullOrEmpty(surname))
             {
                 Person person = new(lastname, firstname, surname, birthday, gender);

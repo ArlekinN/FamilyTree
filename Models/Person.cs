@@ -7,17 +7,17 @@
         public string Firstname { get; set; }
         public string Surname { get; set; }
         public string Birthday { get; set; }
-        public string Genre { get; set; }
-        public bool RootTree { get; set; }
+        public string Gender { get; set; }
+        public int IdRoleInTree { get; set; }
         public List<int> Relatives { get; set; }
 
-        public Person(string lastname, string firstname, string surname, string birthday, string genre)
+        public Person(string lastname, string firstname, string surname, string birthday, string gender)
         {
             Lastname = lastname;
             Firstname = firstname;
             Surname =  surname;
             Birthday = birthday;
-            Genre = genre;
+            Gender = gender;
         }
     }
 }

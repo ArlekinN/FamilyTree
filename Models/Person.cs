@@ -8,6 +8,7 @@
         public string Surname { get; set; }
         public DateTime Birthday { get; set; }
         public string Genre { get; set; }
+        public bool RootTree { get; set; }
         public List<int> Relatives { get; set; }
     }
 }

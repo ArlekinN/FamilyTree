@@ -26,16 +26,12 @@ namespace FamilyTree.DAL
             Firstname VARCHAR(50) NOT NULL,
             Surname VARCHAR(50) NOT NULL,
             Birthdate DATE NOT NULL,
-            Genre VARCHAR(50) NOT NULL);
+            Genre VARCHAR(50) NOT NULL,
+            TreeRoot Bool NOT NULL);
             
             CREATE TABLE IF NOT EXISTS TypeRelationship( 
             Id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, 
             Title VARCHAR(50) NOT NULL);
-
-            CREATE TABLE IF NOT EXISTS FamilyTree( 
-            Id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, 
-            IdPerson INTGER NOT NULL,
-            FOREIGN KEY (IdPerson) REFERENCES Person(Id) ON DELETE CASCADE);
 
             CREATE TABLE IF NOT EXISTS Relationships(
             Id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, 
@@ -55,13 +51,13 @@ namespace FamilyTree.DAL
             connection.OpenAsync().GetAwaiter().GetResult();
             SqliteCommand command = new() { Connection = connection };
             command.CommandText = @"
-            INSERT INTO Person(Id, Lastname, Firstname, Surname, Birthdate, Genre)
+            INSERT INTO Person(Id, Lastname, Firstname, Surname, Birthdate, Genre, TreeRoot)
             VALUES
-                (1, 'Суханова', 'Марьям', 'Михайловна', '1950-01-01', 'Женщина'),
-                (2, 'Галкина', 'Эмма', 'Семёновна', '1973-05-04', 'Женщина'),
-                (3, 'Гаврилов', 'Егор', 'Семёнов', '1975-11-12', 'Мужчина'),
-                (4, 'Лазарева', 'Маргарита', 'Романовна', '1994-08-05', 'Женщина'),
-                (5, 'Лебедев', 'Михаил', 'Дмитриевич', '2004-07-05', 'Мужчина');
+                (1, 'Суханова', 'Марьям', 'Михайловна', '1950-01-01', 'Женщина', true),
+                (2, 'Галкина', 'Эмма', 'Семёновна', '1973-05-04', 'Женщина', false),
+                (3, 'Гаврилов', 'Егор', 'Семёнов', '1975-11-12', 'Мужчина', false),
+                (4, 'Лазарева', 'Маргарита', 'Романовна', '1994-08-05', 'Женщина', false),
+                (5, 'Лебедев', 'Михаил', 'Дмитриевич', '2004-07-05', 'Мужчина', false);
 
             INSERT INTO TypeRelationship(Id, Title)
             VALUES
@@ -71,9 +67,6 @@ namespace FamilyTree.DAL
             command.ExecuteNonQueryAsync().GetAwaiter().GetResult();
 
             command.CommandText = @"
-            INSERT INTO FamilyTree(Id, IdPerson)
-            VALUES
-                (1, 1);
             INSERT INTO Relationships(Id, IdPerson, IdRelative, IdTypeRelationship)
             VALUES
                 (1, 1, 2, 2), 

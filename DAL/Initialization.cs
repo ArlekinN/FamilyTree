@@ -5,9 +5,8 @@ namespace FamilyTree.DAL
 {
     internal class Initialization
     {
-        //private static readonly string dbPath = Path.Combine(AppContext.BaseDirectory, "FamilyTreeDB.db");
         private static readonly string dbPath = "FamilyTreeDB.db";
-        public static void InitializationDatabase()
+        public static void InitializationData()
         {
             if (!File.Exists(dbPath))
             {
@@ -31,15 +30,15 @@ namespace FamilyTree.DAL
             
             CREATE TABLE IF NOT EXISTS TypeRelationship( 
             Id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, 
-            Title VARCHAR(50) NOT NULL;
+            Title VARCHAR(50) NOT NULL);
 
             CREATE TABLE IF NOT EXISTS Relationships(
             Id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, 
             IdPerson INTGER NOT NULL,
             IdRelative INTGER NOT NULL,
             IdTypeRelationship INT NOT NULL,
-            FOREIGN KEY (IdPerson) REFERENCES Person(Id) ON DELETE CASCADE),
-            FOREIGN KEY (IdRelative) REFERENCES Person(Id) ON DELETE CASCADE),
+            FOREIGN KEY (IdPerson) REFERENCES Person(Id) ON DELETE CASCADE,
+            FOREIGN KEY (IdRelative) REFERENCES Person(Id) ON DELETE CASCADE,
             FOREIGN KEY (IdTypeRelationship) REFERENCES TypeRelationship(Id) ON DELETE CASCADE);";
             command.ExecuteNonQueryAsync().GetAwaiter().GetResult();
         }
@@ -51,7 +50,7 @@ namespace FamilyTree.DAL
             connection.OpenAsync().GetAwaiter().GetResult();
             SqliteCommand command = new() { Connection = connection };
             command.CommandText = @"
-            INSERT INTO Product(Id, Lastname, Firstname, Surname, Birthdate, Genre)
+            INSERT INTO Person(Id, Lastname, Firstname, Surname, Birthdate, Genre)
             VALUES
                 (1, 'Суханова', 'Марьям', 'Михайловна', '1950-01-01', 'Женщина'),
                 (2, 'Галкина', 'Эмма', 'Семёновна', '1973-05-04', 'Женщина'),
@@ -63,7 +62,7 @@ namespace FamilyTree.DAL
             VALUES
                 (1, 'супруг'),
                 (2, 'ребенок'),
-                (3, 'родиетль')";
+                (3, 'родиетль');";
             command.ExecuteNonQueryAsync().GetAwaiter().GetResult();
 
             command.CommandText = @"
@@ -75,10 +74,10 @@ namespace FamilyTree.DAL
                 (4, 3, 1, 3),
                 (5, 2, 5, 1),
                 (6, 5, 2, 1),
-                (6, 2, 4, 2),
-                (6, 5, 4, 2),
-                (6, 4, 2, 3),
-                (6, 4, 5, 3),";
+                (7, 2, 4, 2),
+                (8, 5, 4, 2),
+                (9, 4, 2, 3),
+                (10, 4, 5, 3);";
             command.ExecuteNonQueryAsync().GetAwaiter().GetResult();
         }
     }

@@ -1,4 +1,7 @@
-﻿namespace FamilyTree.Presentation
+﻿using FamilyTree.BLL;
+using FamilyTree.Models;
+
+namespace FamilyTree.Presentation
 {
     public partial class CreatePersonForm : Form
     {
@@ -20,14 +23,17 @@
             string lastname = textBoxLastname.Text;
             string firstname = textBoxFirstname.Text;
             string surname = textBoxSurname.Text;
-            string gender = "Мужской";
+            string gender = "Мужчина";
             if (radioButtonFemale.Checked)
             {
-                gender = "Женский";
+                gender = "Женщина";
             }
-            DateTime birthdate = dateTimePickerBirthday.Value;
-            if(!string.IsNullOrEmpty(lastname) && !string.IsNullOrEmpty(firstname) && !string.IsNullOrEmpty(surname))
+            string birthday = dateTimePickerBirthday.Value.Date.ToString("yyyy-MM-dd");
+            System.Diagnostics.Debug.WriteLine(birthday);
+            if (!string.IsNullOrEmpty(lastname) && !string.IsNullOrEmpty(firstname) && !string.IsNullOrEmpty(surname))
             {
+                Person person = new(lastname, firstname, surname, birthday, gender);
+                PersonService.CreatePerson(person);
                 labelResult.ForeColor = Color.Green;
                 labelResult.Text = "Успешно";
                 labelResult.Visible = true;

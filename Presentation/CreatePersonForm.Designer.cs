@@ -122,11 +122,11 @@
             dateTimePickerBirthday.CustomFormat = "dd.MM.yyyy";
             dateTimePickerBirthday.Format = DateTimePickerFormat.Custom;
             dateTimePickerBirthday.Location = new Point(178, 246);
-            dateTimePickerBirthday.MaxDate = new DateTime(2024, 12, 4, 0, 0, 0, 0);
+            dateTimePickerBirthday.MaxDate = new DateTime(2024, 12, 4);
             dateTimePickerBirthday.Name = "dateTimePickerBirthday";
             dateTimePickerBirthday.Size = new Size(171, 27);
             dateTimePickerBirthday.TabIndex = 10;
-            dateTimePickerBirthday.Value = new DateTime(2024, 12, 4, 0, 0, 0, 0);
+            dateTimePickerBirthday.Value = new DateTime(2024, 12, 4);
             // 
             // radioButtonMale
             // 

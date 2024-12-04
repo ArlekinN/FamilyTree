@@ -5,10 +5,10 @@ namespace FamilyTree.DAL
 {
     internal class Initialization
     {
-        private static readonly string dbPath = "FamilyTreeDB.db";
+        private static readonly string DbPath = "FamilyTreeDB.db";
         public static void InitializationData()
         {
-            if (!File.Exists(dbPath))
+            if (!File.Exists(DbPath))
             {
                 CreateDatabase();
                 Seed();
@@ -17,7 +17,7 @@ namespace FamilyTree.DAL
         private static void CreateDatabase()
         {
             Batteries.Init();
-            using var connection = new SqliteConnection($"Data Source={dbPath}");
+            using var connection = new SqliteConnection($"Data Source={DbPath}");
             connection.OpenAsync().GetAwaiter().GetResult();
             SqliteCommand command = new() { Connection = connection };
             command.CommandText = @"CREATE TABLE IF NOT EXISTS Person( 
@@ -25,7 +25,7 @@ namespace FamilyTree.DAL
             Lastname VARCHAR(50) NOT NULL,
             Firstname VARCHAR(50) NOT NULL,
             Surname VARCHAR(50) NOT NULL,
-            Birthdate DATE NOT NULL,
+            Birthday VARCHAR(50) NOT NULL,
             Genre VARCHAR(50) NOT NULL,
             TreeRoot Bool NOT NULL);
             
@@ -47,11 +47,11 @@ namespace FamilyTree.DAL
         private static void Seed()
         {
             Batteries.Init();
-            using var connection = new SqliteConnection($"Data Source={dbPath}");
+            using var connection = new SqliteConnection($"Data Source={DbPath}");
             connection.OpenAsync().GetAwaiter().GetResult();
             SqliteCommand command = new() { Connection = connection };
             command.CommandText = @"
-            INSERT INTO Person(Id, Lastname, Firstname, Surname, Birthdate, Genre, TreeRoot)
+            INSERT INTO Person(Id, Lastname, Firstname, Surname, Birthday, Genre, TreeRoot)
             VALUES
                 (1, 'Суханова', 'Марьям', 'Михайловна', '1950-01-01', 'Женщина', true),
                 (2, 'Галкина', 'Эмма', 'Семёновна', '1973-05-04', 'Женщина', false),

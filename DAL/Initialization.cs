@@ -32,6 +32,11 @@ namespace FamilyTree.DAL
             Id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, 
             Title VARCHAR(50) NOT NULL);
 
+            CREATE TABLE IF NOT EXISTS FamilyTree( 
+            Id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, 
+            IdPerson INTGER NOT NULL,
+            FOREIGN KEY (IdPerson) REFERENCES Person(Id) ON DELETE CASCADE);
+
             CREATE TABLE IF NOT EXISTS Relationships(
             Id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, 
             IdPerson INTGER NOT NULL,
@@ -66,6 +71,9 @@ namespace FamilyTree.DAL
             command.ExecuteNonQueryAsync().GetAwaiter().GetResult();
 
             command.CommandText = @"
+            INSERT INTO FamilyTree(Id, IdPerson)
+            VALUES
+                (1, 1);
             INSERT INTO Relationships(Id, IdPerson, IdRelative, IdTypeRelationship)
             VALUES
                 (1, 1, 2, 2), 

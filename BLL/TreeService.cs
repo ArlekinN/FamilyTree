@@ -53,5 +53,11 @@ namespace FamilyTree.BLL
             _treeRepository.CreateTree(person.Id);
             ChangeCurrentTree(fullname);
         }
+
+        // удалить древо
+        public static void DeleteTree(int id)
+        {
+            _treeRepository.DeleteTree(id);
+        }
     }
 }

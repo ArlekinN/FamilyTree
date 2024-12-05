@@ -24,6 +24,7 @@
             labelRootTree = new Label();
             ButtonChooseTree = new Button();
             labelResult = new Label();
+            ButtonDeleteTree = new Button();
             SuspendLayout();
             // 
             // ButtonCreatePerson
@@ -107,9 +108,9 @@
             // 
             ButtonChooseTree.Location = new Point(30, 76);
             ButtonChooseTree.Name = "ButtonChooseTree";
-            ButtonChooseTree.Size = new Size(136, 29);
+            ButtonChooseTree.Size = new Size(213, 29);
             ButtonChooseTree.TabIndex = 9;
-            ButtonChooseTree.Text = "Выбрать древо";
+            ButtonChooseTree.Text = "Выбрать древо как текущее";
             ButtonChooseTree.UseVisualStyleBackColor = true;
             ButtonChooseTree.Click += ButtonChooseTree_Click;
             // 
@@ -117,18 +118,28 @@
             // 
             labelResult.AutoSize = true;
             labelResult.ForeColor = Color.Green;
-            labelResult.Location = new Point(215, 80);
+            labelResult.Location = new Point(394, 80);
             labelResult.Name = "labelResult";
-            labelResult.Size = new Size(127, 20);
+            labelResult.Size = new Size(0, 20);
             labelResult.TabIndex = 10;
-            labelResult.Text = "Древо изменено";
             labelResult.Visible = false;
+            // 
+            // ButtonDeleteTree
+            // 
+            ButtonDeleteTree.Location = new Point(264, 76);
+            ButtonDeleteTree.Name = "ButtonDeleteTree";
+            ButtonDeleteTree.Size = new Size(94, 29);
+            ButtonDeleteTree.TabIndex = 11;
+            ButtonDeleteTree.Text = "Удалить";
+            ButtonDeleteTree.UseVisualStyleBackColor = true;
+            ButtonDeleteTree.Click += ButtonDeleteTree_Click;
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(678, 527);
+            Controls.Add(ButtonDeleteTree);
             Controls.Add(labelResult);
             Controls.Add(ButtonChooseTree);
             Controls.Add(labelRootTree);
@@ -155,5 +166,6 @@
         private Label labelRootTree;
         private Button ButtonChooseTree;
         private Label labelResult;
+        private Button ButtonDeleteTree;
     }
 }

@@ -87,5 +87,19 @@ namespace FamilyTree.DAL.Repositories
             command.Parameters.AddWithValue("@idTree", roleInTree.IdTree);
             await command.ExecuteNonQueryAsync();
         }
+
+        // удалить роли у древа
+        public async void DeleteRolesInTree(int idTree)
+        {
+            var relationships = new List<Relationship>();
+            Batteries.Init();
+            using var connection = new SqliteConnection(_connectionString);
+            await connection.OpenAsync();
+            SqliteCommand command = new() { Connection = connection };
+            command.CommandText = @"delete from RoleInTree
+                    where IdTree=@id";
+            command.Parameters.AddWithValue("@id", idTree);
+            await command.ExecuteNonQueryAsync();
+        }
     }
 }

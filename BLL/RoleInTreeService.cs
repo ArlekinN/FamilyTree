@@ -30,12 +30,19 @@ namespace FamilyTree.BLL
             _roleInTreeRepository.ChangeRolePerson(idPerson, idTree, idTypeRoleInTree);
         }
 
+        // Создать новый корень
         public static void CreateRoleRoot(string fullname)
         {
             var idTree = TreeService.GetCurrentTree().Id;
             var person = PersonService.GetPersonByFullName(fullname);
             var newRoleInTree = new RoleInTree(person.Id, idTree, 1);
             _roleInTreeRepository.CreateRoleRoot(newRoleInTree);
+        }
+
+        // удалить все роли у древа
+        public static void DeleteRolesInTree(int id)
+        {
+            _roleInTreeRepository.DeleteRolesInTree(id);
         }
     }
 }

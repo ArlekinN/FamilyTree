@@ -66,6 +66,25 @@ namespace FamilyTree.Presentation
             var tree = comboBoxRootTree.Text;
             TreeService.ChangeCurrentTree(tree);
             labelResult.Visible = true;
+            labelResult.Text = "Древо изменено";
+        }
+
+        private void ButtonDeleteTree_Click(object sender, EventArgs e)
+        {
+            var fullname = comboBoxRootTree.Text;
+            var person = PersonService.GetPersonByFullName(fullname);
+            var trees = TreeService.GetIdsTree();
+            var tree = trees.FirstOrDefault(t => t.IdPerson == person.Id).Id;
+
+            RelationshipService.DeleteRelationship(tree);
+            RoleInTreeService.DeleteRolesInTree(tree);
+            TreeService.DeleteTree(tree);
+            labelResult.Visible = true;
+            labelResult.Text = "Древо удалено";
+            if(comboBoxRootTree.Items.Count != 0)
+            {
+                comboBoxRootTree.SelectedIndex = 0;
+            }  
         }
     }
 }

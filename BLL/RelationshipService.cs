@@ -188,10 +188,10 @@ namespace FamilyTree.BLL
             return _relationshipRepository.GetRelationships().Result;
         }
 
-        // удаление связей при создании нового древа
-        public static void DeleteRelationship()
+        // удаление связей у древа
+        public static void DeleteRelationship(int id)
         {
-            _relationshipRepository.DeleteRelationship();
+            _relationshipRepository.DeleteRelationship(id);
         }
     }
 }

@@ -90,5 +90,18 @@ namespace FamilyTree.DAL.Repositories
             command.Parameters.AddWithValue("@idPerson", id);
             await command.ExecuteNonQueryAsync();
         }
+
+        public async void DeleteTree(int id)
+        {
+            var relationships = new List<Relationship>();
+            Batteries.Init();
+            using var connection = new SqliteConnection(_connectionString);
+            await connection.OpenAsync();
+            SqliteCommand command = new() { Connection = connection };
+            command.CommandText = @"delete from Tree
+                    where IdTree=@id";
+            command.Parameters.AddWithValue("@id", id);
+            await command.ExecuteNonQueryAsync();
+        }
     }
 }

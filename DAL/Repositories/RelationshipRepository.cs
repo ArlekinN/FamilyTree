@@ -110,15 +110,17 @@ namespace FamilyTree.DAL.Repositories
             return personsWithChilds;
         }
 
-        // удаление всех отношений
-        public async void DeleteRelationship()
+        // удаление всех отношений у древа
+        public async void DeleteRelationship(int id)
         {
             var relationships = new List<Relationship>();
             Batteries.Init();
             using var connection = new SqliteConnection(_connectionString);
             await connection.OpenAsync();
             SqliteCommand command = new() { Connection = connection };
-            command.CommandText = @"delete from Relationship";
+            command.CommandText = @"delete from Relationship
+                    where idTree=@id";
+            command.Parameters.AddWithValue("@id", id);
             await command.ExecuteNonQueryAsync();
         }
     }

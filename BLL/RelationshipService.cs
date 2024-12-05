@@ -158,9 +158,10 @@ namespace FamilyTree.BLL
         // список имен потомков человека
         public static List<string> GetDescendantPerson(string fullname)
         {
+            var idTree = TreeService.GetCurrentTree().Id;
             var person = PersonService.GetPersonByFullName(fullname);
             var persons = PersonService.GetAllPerson();
-            var listIdDescend = _relationshipRepository.GetListDescendant(person.Id).Result;
+            var listIdDescend = _relationshipRepository.GetListDescendant(person.Id, idTree).Result;
             var fullNamesDescant = persons
                 .Where(p => listIdDescend.Any(l => l == p.Id))
                 .Select(p => $"{p.Lastname} {p.Firstname} {p.Surname}")
@@ -171,8 +172,9 @@ namespace FamilyTree.BLL
         // список имен людей, у которых есть дети
         public static List<string> GetPersonWithChild()
         {
+            var idTree = TreeService.GetCurrentTree().Id;
             var persons = PersonService.GetAllPerson();
-            var relationships = _relationshipRepository.GetIdPersonWithChild().Result;
+            var relationships = _relationshipRepository.GetIdPersonWithChild(idTree).Result;
             var fullnames = persons
                 .Where(p => relationships.Any(r => r == p.Id))
                 .Select(p => $"{p.Lastname} {p.Firstname} {p.Surname}")

@@ -1,6 +1,7 @@
 ﻿using FamilyTree.Models;
 using Microsoft.Data.Sqlite;
 using SQLitePCL;
+using System;
 
 namespace FamilyTree.DAL.Repositories
 {
@@ -74,6 +75,19 @@ namespace FamilyTree.DAL.Repositories
                     SET IdPerson = @id
                     Where CurrentTree = true", connection);
             command.Parameters.AddWithValue("@id", id);
+            await command.ExecuteNonQueryAsync();
+        }
+
+        // создание нового древа
+        public async void CreateTree(int id)
+        {
+            Batteries.Init();
+            using var connection = new SqliteConnection(_connectionString);
+            await connection.OpenAsync();
+            using var command = new SqliteCommand(@"
+                INSERT INTO Tree(idPerson, CurrentTree)
+                VALUES(@idPerson,false)", connection);
+            command.Parameters.AddWithValue("@idPerson", id);
             await command.ExecuteNonQueryAsync();
         }
     }

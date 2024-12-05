@@ -29,5 +29,13 @@ namespace FamilyTree.BLL
         {
             _roleInTreeRepository.ChangeRolePerson(idPerson, idTree, idTypeRoleInTree);
         }
+
+        public static void CreateRoleRoot(string fullname)
+        {
+            var idTree = TreeService.GetCurrentTree().Id;
+            var person = PersonService.GetPersonByFullName(fullname);
+            var newRoleInTree = new RoleInTree(person.Id, idTree, 1);
+            _roleInTreeRepository.CreateRoleRoot(newRoleInTree);
+        }
     }
 }

@@ -73,5 +73,19 @@ namespace FamilyTree.DAL.Repositories
             command.Parameters.AddWithValue("@idTree", idTree);
             await command.ExecuteNonQueryAsync();
         }
+
+        // создание роли корня в древе
+        public async void CreateRoleRoot(RoleInTree roleInTree)
+        {
+            Batteries.Init();
+            using var connection = new SqliteConnection(_connectionString);
+            await connection.OpenAsync();
+            using var command = new SqliteCommand(@"
+                INSERT INTO RoleInTree(IdPerson, IdTree, IdRoleInTree)
+                VALUES(@idPerson, @idTree, 1)", connection);
+            command.Parameters.AddWithValue("@idPerson", roleInTree.IdPerson);
+            command.Parameters.AddWithValue("@idTree", roleInTree.IdTree);
+            await command.ExecuteNonQueryAsync();
+        }
     }
 }

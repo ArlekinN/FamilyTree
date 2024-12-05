@@ -40,9 +40,18 @@ namespace FamilyTree.BLL
             return currnetIdTree;
         }
 
+        // изменение корня текущего древа
         public static void ChangeRootCurrentTree(int id)
         {
             _treeRepository.ChangeRootCurrentTree(id);
+        }
+
+        // создание нового древа
+        public static void CreateTree(string fullname)
+        {
+            var person = PersonService.GetPersonByFullName(fullname);
+            _treeRepository.CreateTree(person.Id);
+            ChangeCurrentTree(fullname);
         }
     }
 }

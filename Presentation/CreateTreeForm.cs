@@ -4,7 +4,7 @@ namespace FamilyTree.Presentation
 {
     public partial class CreateTreeForm : Form
     {
-        private MainForm _mainForm;
+        private readonly MainForm _mainForm;
         public CreateTreeForm(MainForm mainForm)
         {
             InitializeComponent();
@@ -33,8 +33,8 @@ namespace FamilyTree.Presentation
             string newRootTree = comboBoxPersons.Text;
             if (!string.IsNullOrEmpty(newRootTree))
             {
-                PersonService.CreateNewTree(newRootTree);
-                RelationshipService.DeleteRelationship();
+                TreeService.CreateTree(newRootTree);
+                RoleInTreeService.CreateRoleRoot(newRootTree);
                 labelResult.ForeColor = Color.Green;
                 labelResult.Text = "Успешно";
                 labelResult.Visible = true;

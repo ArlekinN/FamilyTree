@@ -7,10 +7,14 @@ namespace FamilyTree.BLL
     {
         private static readonly RoleInTreeRepository _roleInTreeRepository = RoleInTreeRepository.GetInstance();
 
-        // список всех ролей в древе
-        public static List<RoleInTree> GetRoleInTree()
+        public static void CreateRoleInTree(int idPerson)
         {
-            return _roleInTreeRepository.GetRoleInTree().Result;
+            var idTrees = TreeService.GetIdsTree();
+            foreach (var idTree in idTrees)
+            {
+                var newRoleInTree = new RoleInTree(idPerson, idTree.Id, 3);
+                _roleInTreeRepository.CreateRoleInTree(newRoleInTree);
+            }
         }
     }
 }

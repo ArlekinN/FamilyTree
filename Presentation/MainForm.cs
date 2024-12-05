@@ -1,15 +1,27 @@
-﻿namespace FamilyTree.Presentation
+﻿using FamilyTree.BLL;
+
+namespace FamilyTree.Presentation
 {
     public partial class MainForm : Form
     {
         public MainForm()
         {
             InitializeComponent();
+            LoadDataRootTree();
         }
-
+        private void LoadDataRootTree()
+        {
+            comboBoxRootTree.Items.Clear();
+            List<string> roots = TreeService.GetNamesTree();
+            foreach (string root in roots)
+            {
+                comboBoxRootTree.Items.Add(root);
+            }
+            comboBoxRootTree.SelectedIndex = 0;
+        }
         private void ButtonCreatePerson_Click(object sender, EventArgs e)
         {
-            CreatePersonForm createPersonForm = new (this);
+            CreatePersonForm createPersonForm = new(this);
             createPersonForm.Show();
             this.Hide();
         }
@@ -47,6 +59,13 @@
             CreateTreeForm createTreeForm = new(this);
             createTreeForm.Show();
             this.Hide();
+        }
+
+        private void ButtonChooseTree_Click(object sender, EventArgs e)
+        {
+            var tree = comboBoxRootTree.Text;
+            TreeService.ChangeCurrentTree(tree);
+            labelResult.Visible = true;
         }
     }
 }

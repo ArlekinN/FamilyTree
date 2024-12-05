@@ -11,7 +11,8 @@ namespace FamilyTree.BLL
         // создание человека 
         public static void CreatePerson(Person person)
         {
-            _personRepository.CreatePerson(person);   
+            _personRepository.CreatePerson(person);
+            RoleInTreeService.CreateRoleInTree(person.Id);
         }
 
         // список имен всех людей

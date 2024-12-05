@@ -8,7 +8,6 @@
         public string Surname { get; set; }
         public string Birthday { get; set; }
         public string Gender { get; set; }
-        public int IdRoleInTree { get; set; }
 
         public Person() { }
         public Person(string lastname, string firstname, string surname, string birthday, string gender, int idRoleInTree)
@@ -18,12 +17,16 @@
             Surname =  surname;
             Birthday = birthday;
             Gender = gender;
-            IdRoleInTree = idRoleInTree;
         }
 
         public string GetInfoForTree()
         {
             return $"{Lastname} {Firstname} {Surname} ({Birthday})";
+        }
+
+        public string GetFullname()
+        {
+            return $"{Lastname} {Firstname} {Surname}";
         }
     }
 }

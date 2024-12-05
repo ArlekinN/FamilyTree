@@ -3,7 +3,14 @@
     internal class RoleInTree
     {
         public int Id { get; set; }
-        public string Title { get; set; }
-        public RoleInTree(){}
+        public int IdPerson { get; set; }
+        public int IdTree { get; set; }
+        public int IdTypeRoleInTree { get; set; }
+        public RoleInTree(int idPerson, int isTree, int idTypeRoleInTree)
+        {
+            IdPerson = idPerson;
+            IdTree = isTree;
+            IdTypeRoleInTree = idTypeRoleInTree;
+        }
     }
 }

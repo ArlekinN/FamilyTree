@@ -110,5 +110,27 @@ namespace FamilyTree.BLL
                     .ToList();
             return listFullNames;
         }
+        public static List<string> GetDescendantPerson(string fullname)
+        {
+            var person = PersonService.GetPersonByFullName(fullname);
+            var persons = _personRepository.GetPersons().Result;
+            var listIdDescend = _relationshipRepository.GetListDescendant(person.Id).Result;
+            var fullNamesDescant = persons
+                .Where(p => listIdDescend.Any(l => l == p.Id))
+                .Select(p => $"{p.Lastname} {p.Firstname} {p.Surname}")
+                .ToList();
+            return fullNamesDescant;
+        }
+
+        public static List<string> GetPersonWithChild()
+        {
+            var persons = _personRepository.GetPersons().Result;
+            var relationships = _relationshipRepository.GetIdPersonWithChild().Result;
+            var fullnames = persons
+                .Where(p => relationships.Any(r => r == p.Id))
+                .Select(p => $"{p.Lastname} {p.Firstname} {p.Surname}")
+                .ToList();
+            return fullnames;
+        }
     }
 }

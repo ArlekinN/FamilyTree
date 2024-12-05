@@ -55,5 +55,52 @@ namespace FamilyTree.DAL.Repositories
             }
             return relationships;
         }
+        public async Task<List<int>> GetListDescendant(int id)
+        {
+            var idListDescendant = new List<int>();
+            Batteries.Init();
+            using var connection = new SqliteConnection(_connectionString);
+            await connection.OpenAsync();
+            SqliteCommand command = new() { Connection = connection };
+            command.CommandText = @"select idRelative from Relationship
+                    where IdTypeRelationship=3 and IdPerson=@id";
+            command.Parameters.AddWithValue("@id", id);
+            using (var reader = await command.ExecuteReaderAsync())
+            {
+                while (reader.Read())
+                {
+                    idListDescendant.Add(Convert.ToInt32(reader["IdRelative"]));
+                }
+            }
+            var listChildCurrentAncestor = idListDescendant.GetRange(0, idListDescendant.Count);
+            foreach (var descendant in listChildCurrentAncestor)
+            {
+                var newDescendants = GetListDescendant(descendant).Result;
+                foreach (var newDescendant in newDescendants)
+                {
+                    idListDescendant.Add(newDescendant);
+                }  
+            }
+            return idListDescendant;
+        }
+
+        public async Task<List<int>> GetIdPersonWithChild()
+        {
+            var personsWithChilds = new List<int>();
+            Batteries.Init();
+            using var connection = new SqliteConnection(_connectionString);
+            await connection.OpenAsync();
+            SqliteCommand command = new() { Connection = connection };
+            command.CommandText = @"select IdPerson from Relationship
+                where IdTypeRelationship=3";
+            using (var reader = await command.ExecuteReaderAsync())
+            {
+                while (reader.Read())
+                {
+                    personsWithChilds.Add(Convert.ToInt32(reader["IdPerson"]));
+                }
+            }
+            return personsWithChilds;
+        }
     }
 }

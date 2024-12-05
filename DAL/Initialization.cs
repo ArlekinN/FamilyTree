@@ -1,6 +1,5 @@
 ﻿using Microsoft.Data.Sqlite;
 using SQLitePCL;
-using System.Collections.Generic;
 namespace FamilyTree.DAL
 {
     internal class Initialization
@@ -14,6 +13,7 @@ namespace FamilyTree.DAL
                 Seed();
             }
         }
+
         private static void CreateDatabase()
         {
             Batteries.Init();
@@ -39,7 +39,7 @@ namespace FamilyTree.DAL
             Id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, 
             Title VARCHAR(50) NOT NULL);
 
-            CREATE TABLE IF NOT EXISTS Relationships(
+            CREATE TABLE IF NOT EXISTS Relationship(
             Id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE, 
             IdPerson INTGER NOT NULL,
             IdRelative INTGER NOT NULL,
@@ -70,28 +70,30 @@ namespace FamilyTree.DAL
                 (2, 'Галкина', 'Эмма', 'Семёновна', '1973-05-04', 'Женщина', 2),
                 (3, 'Гаврилов', 'Егор', 'Семёнов', '1975-11-12', 'Мужчина', 2),
                 (4, 'Лазарева', 'Маргарита', 'Романовна', '1994-08-05', 'Женщина', 2),
-                (5, 'Лебедев', 'Михаил', 'Дмитриевич', '2004-07-05', 'Мужчина', 2);
+                (5, 'Лебедев', 'Михаил', 'Дмитриевич', '2004-07-05', 'Мужчина', 2),
+                (6, 'Акимова', 'Анна', 'Андреевна', '2007-05-05', 'Женщина', 3),
+                (7, 'Суханов', 'Игорь', 'Алексеевич', '1955-02-20', 'Мужчина', 3);
 
             INSERT INTO TypeRelationship(Id, Title)
             VALUES
                 (1, 'супруг'),
                 (2, 'ребенок'),
-                (3, 'родиетль');";
+                (3, 'родитель');";
             command.ExecuteNonQueryAsync().GetAwaiter().GetResult();
 
             command.CommandText = @"
-            INSERT INTO Relationships(Id, IdPerson, IdRelative, IdTypeRelationship)
+            INSERT INTO Relationship(Id, IdPerson, IdRelative, IdTypeRelationship)
             VALUES
-                (1, 1, 2, 2), 
-                (2, 1, 3, 2),
-                (3, 2, 1, 3),
-                (4, 3, 1, 3),
+                (1, 1, 2, 3), 
+                (2, 1, 3, 3),
+                (3, 2, 1, 2),
+                (4, 3, 1, 2),
                 (5, 2, 5, 1),
                 (6, 5, 2, 1),
-                (7, 2, 4, 2),
-                (8, 5, 4, 2),
-                (9, 4, 2, 3),
-                (10, 4, 5, 3);";
+                (7, 2, 4, 3),
+                (8, 5, 4, 3),
+                (9, 4, 2, 2),
+                (10, 4, 5, 2);";
             command.ExecuteNonQueryAsync().GetAwaiter().GetResult();
         }
     }

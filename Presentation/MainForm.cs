@@ -21,13 +21,6 @@
             this.Hide();
         }
 
-        private void ButtonCreateRelationship_Click(object sender, EventArgs e)
-        {
-            CreateRelationshipForm createRelationshipForm = new(this);
-            createRelationshipForm.Show();
-            this.Hide();
-        }
-
         private void ButtonImmediateFamily_Click(object sender, EventArgs e)
         {
             ImmediateFamilyForm immediateFamilyForm = new(this);

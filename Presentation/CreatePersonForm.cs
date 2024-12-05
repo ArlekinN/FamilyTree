@@ -31,7 +31,7 @@ namespace FamilyTree.Presentation
             string birthday = dateTimePickerBirthday.Value.Date.ToString("yyyy-MM-dd");
             if (!string.IsNullOrEmpty(lastname) && !string.IsNullOrEmpty(firstname) && !string.IsNullOrEmpty(surname))
             {
-                Person person = new(lastname, firstname, surname, birthday, gender);
+                Person person = new(lastname, firstname, surname, birthday, gender, 3);
                 PersonService.CreatePerson(person);
                 labelResult.ForeColor = Color.Green;
                 labelResult.Text = "Успешно";

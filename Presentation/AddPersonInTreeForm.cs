@@ -61,8 +61,10 @@ namespace FamilyTree.Presentation
                     labelResult.ForeColor = Color.Green;
                     labelResult.Text = "Успешно";
                     labelResult.Visible = true;
+                    LoadDataPersonInTree();
+                    LoadDataPersonOutsideTree();
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     labelResult.ForeColor = Color.Red;
                     labelResult.Text = ex.Message;

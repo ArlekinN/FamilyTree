@@ -1,7 +1,6 @@
 ﻿using FamilyTree.Models;
 using Microsoft.Data.Sqlite;
 using SQLitePCL;
-using System;
 
 namespace FamilyTree.DAL.Repositories
 {
@@ -18,6 +17,7 @@ namespace FamilyTree.DAL.Repositories
             return Instance;
         }
 
+        // создание отношений
         public async void CreateRelationship(Relationship relationship)
         {
             Batteries.Init();
@@ -32,6 +32,7 @@ namespace FamilyTree.DAL.Repositories
             await command.ExecuteNonQueryAsync();
         }
 
+        // список отношений
         public async Task<List<Relationship>> GetRelationships()
         {
             var relationships = new List<Relationship>();
@@ -55,6 +56,8 @@ namespace FamilyTree.DAL.Repositories
             }
             return relationships;
         }
+
+        // Список всех потомков у конкретного человека
         public async Task<List<int>> GetListDescendant(int id)
         {
             var idListDescendant = new List<int>();
@@ -84,6 +87,7 @@ namespace FamilyTree.DAL.Repositories
             return idListDescendant;
         }
 
+        // список id людей у которых есть дети
         public async Task<List<int>> GetIdPersonWithChild()
         {
             var personsWithChilds = new List<int>();
@@ -101,6 +105,18 @@ namespace FamilyTree.DAL.Repositories
                 }
             }
             return personsWithChilds;
+        }
+
+        // удаление всех отношений
+        public async void DeleteRelationship()
+        {
+            var relationships = new List<Relationship>();
+            Batteries.Init();
+            using var connection = new SqliteConnection(_connectionString);
+            await connection.OpenAsync();
+            SqliteCommand command = new() { Connection = connection };
+            command.CommandText = @"delete from Relationship";
+            await command.ExecuteNonQueryAsync();
         }
     }
 }

@@ -21,7 +21,7 @@ namespace FamilyTree.Presentation
         private void LoadDataPersons()
         {
             comboBoxPersons.Items.Clear();
-            List<string> persons = PersonService.GetAllPerson();
+            List<string> persons = PersonService.GetAllNamesPerson();
             foreach (string person in persons)
             {
                 comboBoxPersons.Items.Add(person);
@@ -34,6 +34,7 @@ namespace FamilyTree.Presentation
             if (!string.IsNullOrEmpty(newRootTree))
             {
                 PersonService.CreateNewTree(newRootTree);
+                RelationshipService.DeleteRelationship();
                 labelResult.ForeColor = Color.Green;
                 labelResult.Text = "Успешно";
                 labelResult.Visible = true;

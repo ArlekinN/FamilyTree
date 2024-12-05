@@ -14,6 +14,7 @@ namespace FamilyTree.DAL
             }
         }
 
+        // создание таблиц
         private static void CreateDatabase()
         {
             Batteries.Init();
@@ -50,6 +51,7 @@ namespace FamilyTree.DAL
             command.ExecuteNonQueryAsync().GetAwaiter().GetResult();
         }
 
+        // заполнение таблиц
         private static void Seed()
         {
             Batteries.Init();

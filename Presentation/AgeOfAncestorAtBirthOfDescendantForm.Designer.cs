@@ -84,7 +84,7 @@ namespace FamilyTree.Presentation
             // labelAge
             // 
             labelAge.AutoSize = true;
-            labelAge.Location = new Point(236, 216);
+            labelAge.Location = new Point(24, 276);
             labelAge.Name = "labelAge";
             labelAge.Size = new Size(50, 20);
             labelAge.TabIndex = 7;

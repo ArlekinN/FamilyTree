@@ -16,6 +16,8 @@ namespace FamilyTree.DAL.Repositories
             }
             return Instance;
         }
+
+        // список ролей в древе
         public async Task<List<RoleInTree>> GetRoleInTree()
         {
             var roles = new List<RoleInTree>();

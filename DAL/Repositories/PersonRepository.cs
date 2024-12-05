@@ -17,6 +17,7 @@ namespace FamilyTree.DAL.Repositories
             return Instance;
         }
 
+        // создание человека
         public async void CreatePerson(Person person)
         {
             Batteries.Init();
@@ -34,6 +35,7 @@ namespace FamilyTree.DAL.Repositories
             await command.ExecuteNonQueryAsync();
         }
 
+        // список людей
         public async Task<List<Person>> GetPersons()
         {
             var persons = new List<Person>();
@@ -61,6 +63,8 @@ namespace FamilyTree.DAL.Repositories
             }
             return persons;
         }
+
+        // обновление роли человека в древе
         public async void UpdateRoleInTree(int id, int idRoleInTree)
         {
             Batteries.Init();
@@ -75,6 +79,7 @@ namespace FamilyTree.DAL.Repositories
             await command.ExecuteNonQueryAsync();
         }
 
+        // очищение древа
         public async void ClearTree()
         {
             Batteries.Init();
@@ -86,6 +91,7 @@ namespace FamilyTree.DAL.Repositories
             await command.ExecuteNonQueryAsync();
         }
 
+        // создание нового древа
         public async void CreateNewRoot(int id)
         {
             Batteries.Init();

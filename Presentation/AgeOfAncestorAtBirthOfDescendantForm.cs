@@ -43,10 +43,12 @@ namespace FamilyTree.Presentation
             string descendant = comboBoxDescendant.Text;
             if(!string.IsNullOrEmpty(ancestor) && !string.IsNullOrEmpty(descendant))
             {
-
-                labelAge.Text = RelationshipService.GetAgeAncestor(ancestor, descendant).ToString();
+                var age = PersonService.GetAgeAncestor(ancestor, descendant).ToString();
+                labelAge.Text = $"{descendant} родился/ась, когда {ancestor} было {age}";
                 labelAge.ForeColor = Color.Green;
                 labelAge.Visible = true;
+                comboBoxAncestor.Text = string.Empty;
+                comboBoxDescendant.Text = string.Empty;
             }
             else
             {

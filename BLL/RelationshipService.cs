@@ -1,25 +1,25 @@
 ﻿using FamilyTree.DAL.Repositories;
 using FamilyTree.Models;
 using System.Globalization;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace FamilyTree.BLL
 {
     internal class RelationshipService
     {
         private static readonly RelationshipRepository _relationshipRepository = RelationshipRepository.GetInstance();
-        private static readonly TypeRelationshipRepository _typeRelationshipRepository = TypeRelationshipRepository.GetInstance();
-        private static readonly PersonRepository _personRepository = PersonRepository.GetInstance();
+        
+        // Создание новых отношений
         public static void CreateRelationship(string fullnameNewPerson, string fullnamePersonInTree, string typeRelationship)
         {
             var newPerson = PersonService.GetPersonByFullName(fullnameNewPerson);
             var personInTree = PersonService.GetPersonByFullName(fullnamePersonInTree);
-            int idTypeRelationship = _typeRelationshipRepository.GetRelationships().Result.FirstOrDefault(t => t.Title == typeRelationship).Id;
+            int idTypeRelationship = TypeRelationshipService.GetRelationships().FirstOrDefault(t => t.Title == typeRelationship).Id;
             // проверка, что супруги одного пола
             if(newPerson.Gender == personInTree.Gender && typeRelationship == "супруг")
             {
                 throw new Exception("Супруги не могут быть одного пола");
             }
+            
             var relationships = _relationshipRepository.GetRelationships().Result;
             if (typeRelationship == "супруг")
             {
@@ -32,6 +32,7 @@ namespace FamilyTree.BLL
                     throw new Exception("У этого человека уже есть супруг");
                 }
             }
+            
             if(typeRelationship == "родитель")
             {
                 // проверка, что мать уже есть
@@ -49,6 +50,7 @@ namespace FamilyTree.BLL
                         }
                     }
                 }
+                
                 // проверка, что отец уже есть
                 if (newPerson.Gender == "Мужчина")
                 {
@@ -64,58 +66,97 @@ namespace FamilyTree.BLL
                         }
                     }
                 }
+                
+                // проверка, что родитель не младше ребенка
+                DateTime birthdayChild = DateTime.ParseExact(personInTree.Birthday, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+                DateTime birthdayParent = DateTime.ParseExact(newPerson.Birthday, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+                if (birthdayChild.Year - birthdayParent.Year < 0)
+                {
+                    throw new Exception("Родитель не может быть младше ребенка");
+                }
+
             }
+
+            if (typeRelationship == "ребенок")
+            {
+                // проверка, что ребенок не старше родителя
+                DateTime birthdayParent = DateTime.ParseExact(personInTree.Birthday, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+                DateTime birthdayChild = DateTime.ParseExact(newPerson.Birthday, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+                if(birthdayChild.Year - birthdayParent.Year < 0)
+                {
+                    throw new Exception("Ребенок не может быть младше родителя");
+                }
+
+            }
+            
             // создания заданной связи 
             var directRelationship = new Relationship(newPerson.Id, personInTree.Id, idTypeRelationship);
             _relationshipRepository.CreateRelationship(directRelationship);
+
             // создание обратной связи
-            if (idTypeRelationship == 1)
+            if (typeRelationship == "супруг")
             {
                 var inverseRelationship = new Relationship(personInTree.Id, newPerson.Id, idTypeRelationship);
                 _relationshipRepository.CreateRelationship(inverseRelationship);
+                // дети существующего супруга, также становятся детьми нового супруга
+                var childsRelationship = relationships
+                    .Where(r => r.IdPerson == personInTree.Id && r.IdTypeRelationship == 3)
+                    .ToList();
+                foreach (var child in childsRelationship)
+                {
+                    var newRelationship = new Relationship(newPerson.Id, child.IdRelative, 3);
+                    _relationshipRepository.CreateRelationship(newRelationship);
+                    newRelationship = new Relationship(child.IdRelative, newPerson.Id, 2);
+                    _relationshipRepository.CreateRelationship(newRelationship);
+                }
             }
-            else if (idTypeRelationship == 2)
+            else if (typeRelationship == "ребенок")
             {
                 var inverseRelationship = new Relationship(personInTree.Id, newPerson.Id, 3);
                 _relationshipRepository.CreateRelationship(inverseRelationship);
             }
+            // родитель
             else
             {
                 var inverseRelationship = new Relationship(personInTree.Id, newPerson.Id, 2);
                 _relationshipRepository.CreateRelationship(inverseRelationship);
             }
-            _personRepository.UpdateRoleInTree(newPerson.Id, 2);
+
+            // смена root, если у текущего root появился родитель
+            if(typeRelationship == "родитель")
+            {
+                PersonService.UpdateRoleInTree(newPerson.Id, 1);
+                PersonService.UpdateRoleInTree(personInTree.Id, 2);
+            }
+            else
+            {
+                PersonService.UpdateRoleInTree(newPerson.Id, 2);
+            }  
         }
 
+        // список имен родственников человека (родители и дети)
         public static List<string> GetFamily(string fullname, string typeRelationship)
         {
             var person = PersonService.GetPersonByFullName(fullname);
-            var persons = _personRepository.GetPersons().Result;
+            var persons = PersonService.GetAllPerson();
             var relationships = _relationshipRepository.GetRelationships().Result;
-            int idTypeRelationship = _typeRelationshipRepository.GetRelationships().Result.FirstOrDefault(t => t.Title == typeRelationship).Id;
+            int idTypeRelationship = TypeRelationshipService.GetRelationships().FirstOrDefault(t => t.Title == typeRelationship).Id;
             List<Relationship> relationshipPerson = null;
-            if (typeRelationship == "родитель")
-            {
-                relationshipPerson = relationships
-                .Where(r => r.IdRelative == person.Id && r.IdTypeRelationship == idTypeRelationship)
-                .ToList();            
-            }
-            else 
-            {
-                relationshipPerson = relationships
+            relationshipPerson = relationships
                 .Where(r => r.IdRelative == person.Id && r.IdTypeRelationship == idTypeRelationship)
                 .ToList();
-            }
             var listFullNames = persons
                     .Where(p => relationshipPerson.Any(r => r.IdPerson == p.Id))
                     .Select(p => $"{p.Lastname} {p.Firstname} {p.Surname}")
                     .ToList();
             return listFullNames;
         }
+        
+        // список имен потомков человека
         public static List<string> GetDescendantPerson(string fullname)
         {
             var person = PersonService.GetPersonByFullName(fullname);
-            var persons = _personRepository.GetPersons().Result;
+            var persons = PersonService.GetAllPerson();
             var listIdDescend = _relationshipRepository.GetListDescendant(person.Id).Result;
             var fullNamesDescant = persons
                 .Where(p => listIdDescend.Any(l => l == p.Id))
@@ -124,9 +165,10 @@ namespace FamilyTree.BLL
             return fullNamesDescant;
         }
 
+        // список имен людей, у которых есть дети
         public static List<string> GetPersonWithChild()
         {
-            var persons = _personRepository.GetPersons().Result;
+            var persons = PersonService.GetAllPerson();
             var relationships = _relationshipRepository.GetIdPersonWithChild().Result;
             var fullnames = persons
                 .Where(p => relationships.Any(r => r == p.Id))
@@ -135,13 +177,16 @@ namespace FamilyTree.BLL
             return fullnames;
         }
 
-        public static int GetAgeAncestor(string fullnameAncestor, string fullnameDescendant)
+        // список всех родственных связей
+        public static List<Relationship> GetRelationships()
         {
-            var personAncestor =  PersonService.GetPersonByFullName(fullnameAncestor).Birthday;
-            var personDescendant = PersonService.GetPersonByFullName(fullnameDescendant).Birthday;
-            DateTime birthdayAncestor = DateTime.ParseExact(personAncestor, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-            DateTime birthdayDescendant = DateTime.ParseExact(personDescendant, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-            return (birthdayDescendant.Year - birthdayAncestor.Year); 
+            return _relationshipRepository.GetRelationships().Result;
+        }
+
+        // удаление связей при создании нового древа
+        public static void DeleteRelationship()
+        {
+            _relationshipRepository.DeleteRelationship();
         }
     }
 }

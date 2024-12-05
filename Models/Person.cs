@@ -20,5 +20,10 @@
             Gender = gender;
             IdRoleInTree = idRoleInTree;
         }
+
+        public string GetInfoForTree()
+        {
+            return $"{Lastname} {Firstname} {Surname} ({Birthday})";
+        }
     }
 }

@@ -15,6 +15,8 @@ namespace FamilyTree.DAL.Repositories
             }
             return Instance;
         }
+
+        // список типов отношений
         public async Task<List<TypeRelationship>> GetRelationships()
         {
             var typesRelationship = new List<TypeRelationship>();

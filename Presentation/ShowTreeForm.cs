@@ -36,7 +36,8 @@ namespace FamilyTree.Presentation
 
         private void BuildChildNodes(TreeNode node, Person currentPerson, List<Person> persons, List<Relationship> relationships)
         {
-            var spouseRelationship = relationships.FirstOrDefault(r => r.IdPerson == currentPerson.Id && r.IdTypeRelationship == 1);
+            var idTree = TreeService.GetCurrentTree().Id;
+            var spouseRelationship = relationships.FirstOrDefault(r => r.IdPerson == currentPerson.Id && r.IdTypeRelationship == 1 && r.IdTree == idTree);
             if (spouseRelationship is not null)
             {
                 var spouse = persons.FirstOrDefault(p => p.Id == spouseRelationship.IdRelative);
@@ -45,7 +46,7 @@ namespace FamilyTree.Presentation
             }
 
             var childNodes = relationships
-            .Where(r => r.IdPerson == currentPerson.Id && r.IdTypeRelationship == 3)
+            .Where(r => r.IdPerson == currentPerson.Id && r.IdTypeRelationship == 3 && r.IdTree == idTree)
             .ToList();
             foreach(var rel in childNodes)
             {

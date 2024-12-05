@@ -11,7 +11,7 @@ namespace FamilyTree.BLL
         // Создание новых отношений
         public static void CreateRelationship(string fullnameNewPerson, string fullnamePersonInTree, string typeRelationship)
         {
-            var idTree = TreeService.GetCurrentTree();
+            var idTree = TreeService.GetCurrentTree().Id;
             var newPerson = PersonService.GetPersonByFullName(fullnameNewPerson);
             var personInTree = PersonService.GetPersonByFullName(fullnamePersonInTree);
             int idTypeRelationship = TypeRelationshipService.GetRelationships().FirstOrDefault(t => t.Title == typeRelationship).Id;
@@ -139,7 +139,7 @@ namespace FamilyTree.BLL
         // список имен родственников человека (родители и дети)
         public static List<string> GetFamily(string fullname, string typeRelationship)
         {
-            var idTree = TreeService.GetCurrentTree();
+            var idTree = TreeService.GetCurrentTree().Id;
             var person = PersonService.GetPersonByFullName(fullname);
             var persons = PersonService.GetAllPerson();
             var relationships = _relationshipRepository.GetRelationships().Result;

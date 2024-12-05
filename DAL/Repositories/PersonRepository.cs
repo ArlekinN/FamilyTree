@@ -24,14 +24,13 @@ namespace FamilyTree.DAL.Repositories
             using var connection = new SqliteConnection(_connectionString);
             await connection.OpenAsync();
             using var command = new SqliteCommand(@"
-                INSERT INTO Person(Lastname, Firstname, Surname, Birthday, Gender, IdRoleInTree)
-                VALUES(@lastname, @firstname, @surname, @birthday, @gender, @idRoleInTree)", connection);
+                INSERT INTO Person(Lastname, Firstname, Surname, Birthday, Gender)
+                VALUES(@lastname, @firstname, @surname, @birthday, @gender)", connection);
             command.Parameters.AddWithValue("@lastname", person.Lastname);
             command.Parameters.AddWithValue("@firstname", person.Firstname);
             command.Parameters.AddWithValue("@surname", person.Surname);
             command.Parameters.AddWithValue("@birthday", person.Birthday);
             command.Parameters.AddWithValue("@gender", person.Gender);
-            command.Parameters.AddWithValue("@idRoleInTree", person.IdRoleInTree);
             await command.ExecuteNonQueryAsync();
         }
 
@@ -56,7 +55,6 @@ namespace FamilyTree.DAL.Repositories
                         Surname = reader["Surname"].ToString(),
                         Birthday = reader["Birthday"].ToString(),
                         Gender = reader["Gender"].ToString(),
-                        IdRoleInTree = Convert.ToInt32(reader["IdRoleInTree"])
                     };
                     persons.Add(person);
                 }
@@ -64,7 +62,7 @@ namespace FamilyTree.DAL.Repositories
             return persons;
         }
 
-        // обновление роли человека в древе
+        // обновление роли человека в древе УДАЛИТЬ????
         public async void UpdateRoleInTree(int id, int idRoleInTree)
         {
             Batteries.Init();
@@ -79,7 +77,7 @@ namespace FamilyTree.DAL.Repositories
             await command.ExecuteNonQueryAsync();
         }
 
-        // очищение древа
+        // очищение древа УДАЛИТЬ??? или изменить
         public async void ClearTree()
         {
             Batteries.Init();
@@ -91,7 +89,7 @@ namespace FamilyTree.DAL.Repositories
             await command.ExecuteNonQueryAsync();
         }
 
-        // создание нового древа
+        // создание нового древа // УДАЛИТЬ????
         public async void CreateNewRoot(int id)
         {
             Batteries.Init();

@@ -93,8 +93,9 @@ namespace FamilyTree.BLL
         // Получение корня древа
         public static Person GetRootPerson()
         {
+            var currentTree = TreeService.GetCurrentTree();
             var persons = _personRepository.GetPersons().Result;
-            return persons.FirstOrDefault(p => p.IdRoleInTree == 1);
+            return persons.FirstOrDefault(p => p.Id == currentTree.IdPerson);
         }
 
         // Список всех людей

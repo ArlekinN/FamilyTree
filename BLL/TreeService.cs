@@ -32,11 +32,11 @@ namespace FamilyTree.BLL
             return _treeRepository.GetTrees().Result;
         }
 
-        // получени id текущегог древа
-        public static int GetCurrentTree()
+        // получени текущего древа
+        public static Tree GetCurrentTree()
         {
             var trees = _treeRepository.GetTrees().Result;
-            var currnetIdTree = trees.FirstOrDefault(t => t.CurrentTree == true).Id;
+            var currnetIdTree = trees.FirstOrDefault(t => t.CurrentTree == true);
             return currnetIdTree;
         }
 

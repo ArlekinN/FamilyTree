@@ -1,5 +1,7 @@
 ﻿using FamilyTree.DAL.Repositories;
 using FamilyTree.Models;
+using System.Globalization;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace FamilyTree.BLL
 {
@@ -131,6 +133,15 @@ namespace FamilyTree.BLL
                 .Select(p => $"{p.Lastname} {p.Firstname} {p.Surname}")
                 .ToList();
             return fullnames;
+        }
+
+        public static int GetAgeAncestor(string fullnameAncestor, string fullnameDescendant)
+        {
+            var personAncestor =  PersonService.GetPersonByFullName(fullnameAncestor).Birthday;
+            var personDescendant = PersonService.GetPersonByFullName(fullnameDescendant).Birthday;
+            DateTime birthdayAncestor = DateTime.ParseExact(personAncestor, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+            DateTime birthdayDescendant = DateTime.ParseExact(personDescendant, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+            return (birthdayDescendant.Year - birthdayAncestor.Year); 
         }
     }
 }

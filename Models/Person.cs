@@ -9,7 +9,6 @@
         public string Birthday { get; set; }
         public string Gender { get; set; }
         public int IdRoleInTree { get; set; }
-        public List<int> Relatives { get; set; }
 
         public Person() { }
         public Person(string lastname, string firstname, string surname, string birthday, string gender, int idRoleInTree)

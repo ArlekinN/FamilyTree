@@ -11,6 +11,14 @@ namespace FamilyTree.BLL
         {
             _personRepository.CreatePerson(person);   
         }
+        public static List<string> GetAllPerson()
+        {
+            var persons = _personRepository.GetPersons().Result;
+            var names = persons
+                .Select(person => $"{person.Lastname} {person.Firstname} {person.Surname}")
+                .ToList();
+            return names;
+        }
 
         public static List<string> GetPersonsOutsideTree()
         {
@@ -54,5 +62,13 @@ namespace FamilyTree.BLL
             var person = persons.FirstOrDefault(p => p.Id == id);
             return person;
         }
+
+        public static void CreateNewTree(string fullnameNewRoot)
+        {
+            _personRepository.ClearTree();
+            var person = GetPersonByFullName(fullnameNewRoot);
+            _personRepository.CreateNewRoot(person.Id);
+        }
+        
     }
 }

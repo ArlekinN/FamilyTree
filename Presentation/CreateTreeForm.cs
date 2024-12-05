@@ -1,4 +1,6 @@
-﻿namespace FamilyTree.Presentation
+﻿using FamilyTree.BLL;
+
+namespace FamilyTree.Presentation
 {
     public partial class CreateTreeForm : Form
     {
@@ -7,12 +9,41 @@
         {
             InitializeComponent();
             _mainForm = mainForm;
+            LoadDataPersons();
         }
 
         private void ButtonBack_Click(object sender, EventArgs e)
         {
             _mainForm.Show();
             this.Close();
+        }
+
+        private void LoadDataPersons()
+        {
+            comboBoxPersons.Items.Clear();
+            List<string> persons = PersonService.GetAllPerson();
+            foreach (string person in persons)
+            {
+                comboBoxPersons.Items.Add(person);
+            }
+        }
+
+        private void ButtonCreateTree_Click(object sender, EventArgs e)
+        {
+            string newRootTree = comboBoxPersons.Text;
+            if (!string.IsNullOrEmpty(newRootTree))
+            {
+                PersonService.CreateNewTree(newRootTree);
+                labelResult.ForeColor = Color.Green;
+                labelResult.Text = "Успешно";
+                labelResult.Visible = true;
+            }
+            else
+            {
+                labelResult.ForeColor = Color.Red;
+                labelResult.Text = "Поле не должно быть пустым";
+                labelResult.Visible = true;
+            }
         }
     }
 }

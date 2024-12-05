@@ -74,5 +74,29 @@ namespace FamilyTree.DAL.Repositories
             command.Parameters.AddWithValue("@idRoleInTree", idRoleInTree);
             await command.ExecuteNonQueryAsync();
         }
+
+        public async void ClearTree()
+        {
+            Batteries.Init();
+            using var connection = new SqliteConnection(_connectionString);
+            await connection.OpenAsync();
+            using var command = new SqliteCommand(@"
+                    UPDATE Person
+                    SET IdRoleInTree = 3", connection);
+            await command.ExecuteNonQueryAsync();
+        }
+
+        public async void CreateNewRoot(int id)
+        {
+            Batteries.Init();
+            using var connection = new SqliteConnection(_connectionString);
+            await connection.OpenAsync();
+            using var command = new SqliteCommand(@"
+                    UPDATE Person
+                    SET IdRoleInTree = 1
+                    WHERE Id=@id", connection);
+            command.Parameters.AddWithValue("@id", id);
+            await command.ExecuteNonQueryAsync();
+        }
     }
 }

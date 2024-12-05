@@ -28,29 +28,27 @@ namespace FamilyTree.BLL
         // спиок имен людей, которых нет в древе
         public static List<string> GetPersonsOutsideTree()
         {
+            var idTree = TreeService.GetCurrentTree();
             var persons = _personRepository.GetPersons().Result;
-            var rolesInTree = RoleInTreeService.GetRoleInTree();
+            var roles = RoleInTreeService.GetRoleInTree();
             var personOutsideTree = persons
-                .Where(person => rolesInTree.Any(role => role.Id == person.IdRoleInTree && role.Title == "Отсутствует"))
-                .ToList();
-            var names = personOutsideTree
+                .Where(person => roles.Any(r => r.IdTree == idTree && r.IdTypeRoleInTree == 3))
                 .Select(person => $"{person.Lastname} {person.Firstname} {person.Surname}")
                 .ToList();
-            return names;
+            return personOutsideTree;
         }
 
         // список имен людей, которые есть в древе
         public static List<string> GetPersonsInTree()
         {
+            var idTree = TreeService.GetCurrentTree();
             var persons = _personRepository.GetPersons().Result;
-            var rolesInTree = RoleInTreeService.GetRoleInTree();
+            var roles = RoleInTreeService.GetRoleInTree();
             var personOutsideTree = persons
-                .Where(person => rolesInTree.Any(role => role.Id == person.IdRoleInTree && role.Title != "Отсутствует"))
-                .ToList();
-            var names = personOutsideTree
+                .Where(person => roles.Any(r => r.IdTree == idTree && r.IdTypeRoleInTree != 3))
                 .Select(person => $"{person.Lastname} {person.Firstname} {person.Surname}")
                 .ToList();
-            return names;
+            return personOutsideTree;
         }
 
         // получение человека по ФИО

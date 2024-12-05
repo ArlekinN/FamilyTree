@@ -33,7 +33,8 @@ namespace FamilyTree.DAL.Repositories
                     var tree = new Tree
                     {
                         Id = Convert.ToInt32(reader["Id"]),
-                        IdPerson = Convert.ToInt32(reader["IdPerson"])
+                        IdPerson = Convert.ToInt32(reader["IdPerson"]),
+                        CurrentTree = Convert.ToBoolean(reader["CurrentTree"])
                     };
                     trees.Add(tree);
                 }
@@ -41,7 +42,7 @@ namespace FamilyTree.DAL.Repositories
             return trees;
         }
 
-        // изменение текущего дерева
+        // изменение текущего древа
         public async void ChangeCurrentTree(int id)
         {
             Batteries.Init();
@@ -57,6 +58,21 @@ namespace FamilyTree.DAL.Repositories
                     UPDATE Tree
                     SET CurrentTree = true
                     Where IdPerson = @id", connection);
+            command.Parameters.AddWithValue("@id", id);
+            await command.ExecuteNonQueryAsync();
+        }
+
+        // изменение корня текущего древа
+        public async void ChangeRootCurrentTree(int id)
+        {
+            Batteries.Init();
+            using var connection = new SqliteConnection(_connectionString);
+            await connection.OpenAsync();
+            SqliteCommand command = new() { Connection = connection };
+            command = new SqliteCommand(@"
+                    UPDATE Tree
+                    SET IdPerson = @id
+                    Where CurrentTree = true", connection);
             command.Parameters.AddWithValue("@id", id);
             await command.ExecuteNonQueryAsync();
         }

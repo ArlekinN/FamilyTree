@@ -31,5 +31,18 @@ namespace FamilyTree.BLL
         {
             return _treeRepository.GetTrees().Result;
         }
+
+        // получени id текущегог древа
+        public static int GetCurrentTree()
+        {
+            var trees = _treeRepository.GetTrees().Result;
+            var currnetIdTree = trees.FirstOrDefault(t => t.CurrentTree == true).Id;
+            return currnetIdTree;
+        }
+
+        public static void ChangeRootCurrentTree(int id)
+        {
+            _treeRepository.ChangeRootCurrentTree(id);
+        }
     }
 }

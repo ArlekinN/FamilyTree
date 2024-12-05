@@ -24,11 +24,12 @@ namespace FamilyTree.DAL.Repositories
             using var connection = new SqliteConnection(_connectionString);
             await connection.OpenAsync();
             using var command = new SqliteCommand(@"
-                INSERT INTO Relationship(IdPerson, IdRelative, IdTypeRelationship)
-                VALUES(@idPerson, @idRelative, @idTypeRelationship)", connection);
+                INSERT INTO Relationship(IdPerson, IdRelative, IdTypeRelationship, IdTree)
+                VALUES(@idPerson, @idRelative, @idTypeRelationship, @idTree)", connection);
             command.Parameters.AddWithValue("@idPerson", relationship.IdPerson);
             command.Parameters.AddWithValue("@idRelative", relationship.IdRelative);
             command.Parameters.AddWithValue("@idTypeRelationship", relationship.IdTypeRelationship);
+            command.Parameters.AddWithValue("@idTree", relationship.IdTree);
             await command.ExecuteNonQueryAsync();
         }
 

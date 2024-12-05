@@ -32,5 +32,46 @@ namespace FamilyTree.DAL.Repositories
             command.Parameters.AddWithValue("@idRoleInTree", roleInTree.IdTypeRoleInTree);
             await command.ExecuteNonQueryAsync();
         }
+
+        public async Task<List<RoleInTree>> GetRoleInTree()
+        {
+            var roles = new List<RoleInTree>();
+            Batteries.Init();
+            using var connection = new SqliteConnection(_connectionString);
+            await connection.OpenAsync();
+            SqliteCommand command = new() { Connection = connection };
+            command.CommandText = @"select * from RoleInTree";
+            using (var reader = await command.ExecuteReaderAsync())
+            {
+                while (reader.Read())
+                {
+                    var role = new RoleInTree
+                    {
+                        Id = Convert.ToInt32(reader["Id"]),
+                        IdPerson = Convert.ToInt32(reader["Lastname"]),
+                        IdTree = Convert.ToInt32(reader["Firstname"]),
+                        IdTypeRoleInTree = Convert.ToInt32(reader["Surname"])
+                    };
+                    roles.Add(role);
+                }
+            }
+            return roles;
+        }
+
+        // изменение роли человека 
+        public async void ChangeRolePerson(int idPerson, int idTree, int idTypeRoleInTree)
+        {
+            Batteries.Init();
+            using var connection = new SqliteConnection(_connectionString);
+            await connection.OpenAsync();
+            using var command = new SqliteCommand(@"
+                    UPDATE RoleInTree
+                    SET IdTypeRoleInTree = @idTypeRoleInTree
+                    WHERE IdPerson=@idPerson and idTree=@idTree", connection);
+            command.Parameters.AddWithValue("@idPerson", idPerson);
+            command.Parameters.AddWithValue("@idTypeRoleInTree", idTypeRoleInTree);
+            command.Parameters.AddWithValue("@idTree", idTree);
+            await command.ExecuteNonQueryAsync();
+        }
     }
 }

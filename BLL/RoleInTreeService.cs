@@ -7,6 +7,7 @@ namespace FamilyTree.BLL
     {
         private static readonly RoleInTreeRepository _roleInTreeRepository = RoleInTreeRepository.GetInstance();
 
+        // создание роли для человека во всех деревьях
         public static void CreateRoleInTree(int idPerson)
         {
             var idTrees = TreeService.GetIdsTree();
@@ -15,6 +16,18 @@ namespace FamilyTree.BLL
                 var newRoleInTree = new RoleInTree(idPerson, idTree.Id, 3);
                 _roleInTreeRepository.CreateRoleInTree(newRoleInTree);
             }
+        }
+
+        // список ролей
+        public static List<RoleInTree> GetRoleInTree()
+        {
+            return _roleInTreeRepository.GetRoleInTree().Result;
+        }
+
+        // изменение роли человека в древе
+        public static void ChangeRolePerson(int idPerson, int idTree, int idTypeRoleInTree)
+        {
+            _roleInTreeRepository.ChangeRolePerson(idPerson, idTree, idTypeRoleInTree);
         }
     }
 }

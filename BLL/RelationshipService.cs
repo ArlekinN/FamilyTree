@@ -11,6 +11,7 @@ namespace FamilyTree.BLL
         // Создание новых отношений
         public static void CreateRelationship(string fullnameNewPerson, string fullnamePersonInTree, string typeRelationship)
         {
+            var idTree = TreeService.GetCurrentTree();
             var newPerson = PersonService.GetPersonByFullName(fullnameNewPerson);
             var personInTree = PersonService.GetPersonByFullName(fullnamePersonInTree);
             int idTypeRelationship = TypeRelationshipService.GetRelationships().FirstOrDefault(t => t.Title == typeRelationship).Id;
@@ -25,7 +26,7 @@ namespace FamilyTree.BLL
             {
                 // проверка, что супруг уже есть
                 var relationship1 = relationships
-                        .Where(r => r.IdPerson == personInTree.Id && r.IdTypeRelationship == idTypeRelationship)
+                        .Where(r => r.IdPerson == personInTree.Id && r.IdTypeRelationship == idTypeRelationship && r.IdTree == idTree)
                         .ToList();
                 if (relationship1.Count != 0)
                 {
@@ -39,7 +40,7 @@ namespace FamilyTree.BLL
                 if (newPerson.Gender == "Женщина")
                 {
                     var relationship2 = relationships
-                    .Where(r => r.IdRelative == personInTree.Id && r.IdTypeRelationship == idTypeRelationship)
+                    .Where(r => r.IdRelative == personInTree.Id && r.IdTypeRelationship == idTypeRelationship && r.IdTree == idTree)
                     .ToList();
                     foreach (var item in relationship2)
                     {
@@ -55,7 +56,7 @@ namespace FamilyTree.BLL
                 if (newPerson.Gender == "Мужчина")
                 {
                     var relationship2 = relationships
-                    .Where(r => r.IdRelative == personInTree.Id && r.IdTypeRelationship == idTypeRelationship)
+                    .Where(r => r.IdRelative == personInTree.Id && r.IdTypeRelationship == idTypeRelationship && r.IdTree == idTree)
                     .ToList();
                     foreach (var item in relationship2)
                     {
@@ -90,13 +91,13 @@ namespace FamilyTree.BLL
             }
             
             // создания заданной связи 
-            var directRelationship = new Relationship(newPerson.Id, personInTree.Id, idTypeRelationship);
+            var directRelationship = new Relationship(newPerson.Id, personInTree.Id, idTypeRelationship, idTree);
             _relationshipRepository.CreateRelationship(directRelationship);
 
             // создание обратной связи
             if (typeRelationship == "супруг")
             {
-                var inverseRelationship = new Relationship(personInTree.Id, newPerson.Id, idTypeRelationship);
+                var inverseRelationship = new Relationship(personInTree.Id, newPerson.Id, idTypeRelationship, idTree);
                 _relationshipRepository.CreateRelationship(inverseRelationship);
                 // дети существующего супруга, также становятся детьми нового супруга
                 var childsRelationship = relationships
@@ -104,46 +105,48 @@ namespace FamilyTree.BLL
                     .ToList();
                 foreach (var child in childsRelationship)
                 {
-                    var newRelationship = new Relationship(newPerson.Id, child.IdRelative, 3);
+                    var newRelationship = new Relationship(newPerson.Id, child.IdRelative, 3, idTree);
                     _relationshipRepository.CreateRelationship(newRelationship);
-                    newRelationship = new Relationship(child.IdRelative, newPerson.Id, 2);
+                    newRelationship = new Relationship(child.IdRelative, newPerson.Id, 2, idTree);
                     _relationshipRepository.CreateRelationship(newRelationship);
                 }
             }
             else if (typeRelationship == "ребенок")
             {
-                var inverseRelationship = new Relationship(personInTree.Id, newPerson.Id, 3);
+                var inverseRelationship = new Relationship(personInTree.Id, newPerson.Id, 3, idTree);
                 _relationshipRepository.CreateRelationship(inverseRelationship);
             }
             // родитель
             else
             {
-                var inverseRelationship = new Relationship(personInTree.Id, newPerson.Id, 2);
+                var inverseRelationship = new Relationship(personInTree.Id, newPerson.Id, 2, idTree);
                 _relationshipRepository.CreateRelationship(inverseRelationship);
             }
 
             // смена root, если у текущего root появился родитель
             if(typeRelationship == "родитель")
             {
-                PersonService.UpdateRoleInTree(newPerson.Id, 1);
-                PersonService.UpdateRoleInTree(personInTree.Id, 2);
+                TreeService.ChangeRootCurrentTree(newPerson.Id);
+                RoleInTreeService.ChangeRolePerson(newPerson.Id, idTree, 1);
+                RoleInTreeService.ChangeRolePerson(personInTree.Id, idTree, 2);
             }
             else
             {
-                PersonService.UpdateRoleInTree(newPerson.Id, 2);
+                RoleInTreeService.ChangeRolePerson(newPerson.Id, idTree, 2);
             }  
         }
 
         // список имен родственников человека (родители и дети)
         public static List<string> GetFamily(string fullname, string typeRelationship)
         {
+            var idTree = TreeService.GetCurrentTree();
             var person = PersonService.GetPersonByFullName(fullname);
             var persons = PersonService.GetAllPerson();
             var relationships = _relationshipRepository.GetRelationships().Result;
             int idTypeRelationship = TypeRelationshipService.GetRelationships().FirstOrDefault(t => t.Title == typeRelationship).Id;
             List<Relationship> relationshipPerson = null;
             relationshipPerson = relationships
-                .Where(r => r.IdRelative == person.Id && r.IdTypeRelationship == idTypeRelationship)
+                .Where(r => r.IdRelative == person.Id && r.IdTypeRelationship == idTypeRelationship && r.IdTree == idTree)
                 .ToList();
             var listFullNames = persons
                     .Where(p => relationshipPerson.Any(r => r.IdPerson == p.Id))

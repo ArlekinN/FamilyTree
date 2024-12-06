@@ -42,6 +42,7 @@ namespace FamilyTree.Presentation
                 ButtonShowTree.Enabled = false;
                 ButtonAgeOfAncestorAtBirthOfDescendant.Enabled = false;
                 ButtonCommonAncestors.Enabled = false;
+                ButtonGraphTree.Enabled = false;
                 return false;
             }
             else
@@ -52,6 +53,7 @@ namespace FamilyTree.Presentation
                 ButtonShowTree.Enabled = true;
                 ButtonAgeOfAncestorAtBirthOfDescendant.Enabled = true;
                 ButtonCommonAncestors.Enabled = true;
+                ButtonGraphTree.Enabled = true;
                 return true;
             }
         }
@@ -149,7 +151,9 @@ namespace FamilyTree.Presentation
                     ButtonAddPersonInTree.Enabled = false;
                     ButtonImmediateFamily.Enabled = false;
                     ButtonShowTree.Enabled = false;
+                    ButtonGraphTree.Enabled = false;
                     ButtonAgeOfAncestorAtBirthOfDescendant.Enabled = false;
+                    ButtonCommonAncestors.Enabled = false;
                 }
                 else
                 {
@@ -166,6 +170,17 @@ namespace FamilyTree.Presentation
                 CommonAncestorsForm commonAncestorsForm = new(this);
                 labelResult.Visible = false;
                 commonAncestorsForm.Show();
+                this.Hide();
+            }
+        }
+
+        private void ButtonGraphTree_Click(object sender, EventArgs e)
+        {
+            if (CheckRoot())
+            {
+                GraphShowTreeForm graphShowTreeForm = new(this);
+                labelResult.Visible = false;
+                graphShowTreeForm.Show();
                 this.Hide();
             }
         }

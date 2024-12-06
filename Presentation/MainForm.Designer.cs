@@ -26,6 +26,7 @@
             labelResult = new Label();
             ButtonDeleteTree = new Button();
             ButtonCommonAncestors = new Button();
+            ButtonGraphTree = new Button();
             SuspendLayout();
             // 
             // ButtonCreatePerson
@@ -154,11 +155,22 @@
             ButtonCommonAncestors.UseVisualStyleBackColor = true;
             ButtonCommonAncestors.Click += ButtonCommonAncestors_Click;
             // 
+            // ButtonGraphTree
+            // 
+            ButtonGraphTree.Location = new Point(406, 215);
+            ButtonGraphTree.Name = "ButtonGraphTree";
+            ButtonGraphTree.Size = new Size(242, 29);
+            ButtonGraphTree.TabIndex = 13;
+            ButtonGraphTree.Text = "Показать графическое древо";
+            ButtonGraphTree.UseVisualStyleBackColor = true;
+            ButtonGraphTree.Click += ButtonGraphTree_Click;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(678, 527);
+            Controls.Add(ButtonGraphTree);
             Controls.Add(ButtonCommonAncestors);
             Controls.Add(ButtonDeleteTree);
             Controls.Add(labelResult);
@@ -189,5 +201,6 @@
         private Label labelResult;
         private Button ButtonDeleteTree;
         private Button ButtonCommonAncestors;
+        private Button ButtonGraphTree;
     }
 }

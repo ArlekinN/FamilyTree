@@ -210,5 +210,22 @@ namespace FamilyTree.BLL
             var idTree = TreeService.GetCurrentTree().Id;
             return _relationshipRepository.GetListAncestors(person.Id, idTree).Result;
         }
+
+        // получене ФИО супруга
+        public static string GetFullNameSpouse(string fullname)
+        {
+            var person = PersonService.GetPersonByFullName(fullname);
+            var persons = PersonService.GetAllPerson();
+            var idTree = TreeService.GetCurrentTree().Id;
+            var relationships = _relationshipRepository.GetRelationships().Result;
+            var relationshipSpouse = relationships.FirstOrDefault(r => r.IdPerson== person.Id && r.IdTree == idTree && r.IdTypeRelationship == 1);
+            if(relationshipSpouse is not null)
+            {
+                var nameSpouse = persons.FirstOrDefault(p => p.Id == relationshipSpouse.IdRelative).GetFullname();
+                return nameSpouse;
+            }
+            return "";
+            
+        }
     }
 }

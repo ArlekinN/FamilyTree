@@ -27,7 +27,7 @@ namespace FamilyTree.Presentation
                         comboBoxRootTree.SelectedIndex = i;
                     }
                 }
-            } 
+            }
         }
 
         private bool CheckRoot()
@@ -41,6 +41,7 @@ namespace FamilyTree.Presentation
                 ButtonImmediateFamily.Enabled = false;
                 ButtonShowTree.Enabled = false;
                 ButtonAgeOfAncestorAtBirthOfDescendant.Enabled = false;
+                ButtonCommonAncestors.Enabled = false;
                 return false;
             }
             else
@@ -50,6 +51,7 @@ namespace FamilyTree.Presentation
                 ButtonImmediateFamily.Enabled = true;
                 ButtonShowTree.Enabled = true;
                 ButtonAgeOfAncestorAtBirthOfDescendant.Enabled = true;
+                ButtonCommonAncestors.Enabled = true;
                 return true;
             }
         }
@@ -80,7 +82,7 @@ namespace FamilyTree.Presentation
                 labelResult.Visible = false;
                 immediateFamilyForm.Show();
                 this.Hide();
-            } 
+            }
         }
 
         private void ButtonShowTree_Click(object sender, EventArgs e)
@@ -91,7 +93,7 @@ namespace FamilyTree.Presentation
                 labelResult.Visible = false;
                 showTreeForm.Show();
                 this.Hide();
-            } 
+            }
         }
 
         private void ButtonAgeOfAncestorAtBirthOfDescendant_Click(object sender, EventArgs e)
@@ -121,7 +123,7 @@ namespace FamilyTree.Presentation
                 labelResult.Visible = true;
                 labelResult.ForeColor = Color.Green;
                 labelResult.Text = "Древо изменено";
-            }       
+            }
         }
 
         private void ButtonDeleteTree_Click(object sender, EventArgs e)
@@ -154,7 +156,18 @@ namespace FamilyTree.Presentation
                     TreeService.ChangeCurrentTree(updateListTrees[0]);
                     LoadDataRootTree();
                 }
-            }  
+            }
+        }
+
+        private void ButtonCommonAncestors_Click(object sender, EventArgs e)
+        {
+            if (CheckRoot())
+            {
+                CommonAncestorsForm commonAncestorsForm = new(this);
+                labelResult.Visible = false;
+                commonAncestorsForm.Show();
+                this.Hide();
+            }
         }
     }
 }

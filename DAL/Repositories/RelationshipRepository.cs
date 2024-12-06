@@ -79,10 +79,10 @@ namespace FamilyTree.DAL.Repositories
                     idListDescendant.Add(Convert.ToInt32(reader["IdRelative"]));
                 }
             }
-            var listChildCurrentAncestor = idListDescendant.GetRange(0, idListDescendant.Count);
-            foreach (var descendant in listChildCurrentAncestor)
+            var listChildCurrentDescendant = idListDescendant.GetRange(0, idListDescendant.Count);
+            foreach (var child in listChildCurrentDescendant)
             {
-                var newDescendants = GetListDescendant(descendant, idTree).Result;
+                var newDescendants = GetListDescendant(child, idTree).Result;
                 foreach (var newDescendant in newDescendants)
                 {
                     idListDescendant.Add(newDescendant);
@@ -124,6 +124,37 @@ namespace FamilyTree.DAL.Repositories
                     where idTree=@id";
             command.Parameters.AddWithValue("@id", id);
             await command.ExecuteNonQueryAsync();
+        }
+
+        // список предков 
+        public async Task<List<int>> GetListAncestors(int idPerson, int idTree)
+        {
+            var idListAncestors = new List<int>();
+            Batteries.Init();
+            using var connection = new SqliteConnection(_connectionString);
+            await connection.OpenAsync();
+            SqliteCommand command = new() { Connection = connection };
+            command.CommandText = @"select idPerson from Relationship
+                    where IdTypeRelationship=3 and IdRelative=@idPerson and IdTree=@idTree";
+            command.Parameters.AddWithValue("@idPerson", idPerson);
+            command.Parameters.AddWithValue("@idTree", idTree);
+            using (var reader = await command.ExecuteReaderAsync())
+            {
+                while (reader.Read())
+                {
+                    idListAncestors.Add(Convert.ToInt32(reader["IdPerson"]));
+                }
+            }
+            var listParentsCurrentAncestor = idListAncestors.GetRange(0, idListAncestors.Count);
+            foreach (var parent in listParentsCurrentAncestor)
+            {
+                var newAncestors = GetListAncestors(parent, idTree).Result;
+                foreach (var item in newAncestors)
+                {
+                    idListAncestors.Add(item);
+                }
+            }
+            return idListAncestors;
         }
     }
 }

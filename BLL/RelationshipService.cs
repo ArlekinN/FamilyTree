@@ -202,5 +202,13 @@ namespace FamilyTree.BLL
         {
             _relationshipRepository.DeleteRelationship(id);
         }
+
+        // список предков человека 
+        public static List<int> GetAncestors(string fullname)
+        {
+            var person = PersonService.GetPersonByFullName(fullname);
+            var idTree = TreeService.GetCurrentTree().Id;
+            return _relationshipRepository.GetListAncestors(person.Id, idTree).Result;
+        }
     }
 }

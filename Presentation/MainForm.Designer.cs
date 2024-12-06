@@ -25,6 +25,7 @@
             ButtonChooseTree = new Button();
             labelResult = new Label();
             ButtonDeleteTree = new Button();
+            ButtonCommonAncestors = new Button();
             SuspendLayout();
             // 
             // ButtonCreatePerson
@@ -142,11 +143,23 @@
             ButtonDeleteTree.UseVisualStyleBackColor = true;
             ButtonDeleteTree.Click += ButtonDeleteTree_Click;
             // 
+            // ButtonCommonAncestors
+            // 
+            ButtonCommonAncestors.Location = new Point(406, 151);
+            ButtonCommonAncestors.Name = "ButtonCommonAncestors";
+            ButtonCommonAncestors.Size = new Size(136, 29);
+            ButtonCommonAncestors.TabIndex = 12;
+            ButtonCommonAncestors.TabStop = false;
+            ButtonCommonAncestors.Text = "Общие предки";
+            ButtonCommonAncestors.UseVisualStyleBackColor = true;
+            ButtonCommonAncestors.Click += ButtonCommonAncestors_Click;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(678, 527);
+            Controls.Add(ButtonCommonAncestors);
             Controls.Add(ButtonDeleteTree);
             Controls.Add(labelResult);
             Controls.Add(ButtonChooseTree);
@@ -175,5 +188,6 @@
         private Button ButtonChooseTree;
         private Label labelResult;
         private Button ButtonDeleteTree;
+        private Button ButtonCommonAncestors;
     }
 }

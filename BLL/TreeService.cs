@@ -19,7 +19,7 @@ namespace FamilyTree.BLL
             return names;
         }
 
-        // изменение текущего древа
+        // изменение текущее древа
         public static void ChangeCurrentTree(string fullname)
         {
             var person = PersonService.GetPersonByFullName(fullname);
@@ -27,7 +27,7 @@ namespace FamilyTree.BLL
         }
 
         // список древ
-        public static List<Tree> GetIdsTree()
+        public static List<Tree> GetTrees()
         {
             return _treeRepository.GetTrees().Result;
         }

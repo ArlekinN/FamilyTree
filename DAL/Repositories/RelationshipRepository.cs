@@ -48,9 +48,11 @@ namespace FamilyTree.DAL.Repositories
                 {
                     var relationship = new Relationship
                     {
+                        Id = Convert.ToInt32(reader["Id"]),
                         IdPerson = Convert.ToInt32(reader["IdPerson"]),
                         IdRelative = Convert.ToInt32(reader["IdRelative"]),
-                        IdTypeRelationship = Convert.ToInt32(reader["IdTypeRelationship"])
+                        IdTypeRelationship = Convert.ToInt32(reader["IdTypeRelationship"]),
+                        IdTree = Convert.ToInt32(reader["IdTree"])
                     };
                     relationships.Add(relationship);
                 }
@@ -67,7 +69,7 @@ namespace FamilyTree.DAL.Repositories
             await connection.OpenAsync();
             SqliteCommand command = new() { Connection = connection };
             command.CommandText = @"select idRelative from Relationship
-                    where IdTypeRelationship=3 and IdPerson=@id and IdTree=@idTree";
+                    where IdTypeRelationship=3 and IdPerson=@idPerson and IdTree=@idTree";
             command.Parameters.AddWithValue("@idPerson", idPerson);
             command.Parameters.AddWithValue("@idTree", idTree);
             using (var reader = await command.ExecuteReaderAsync())

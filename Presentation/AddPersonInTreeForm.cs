@@ -63,6 +63,7 @@ namespace FamilyTree.Presentation
                     labelResult.Visible = true;
                     LoadDataPersonInTree();
                     LoadDataPersonOutsideTree();
+                    comboBoxListPersonOutsideTree.Text = "";
                 }
                 catch (Exception ex)
                 {

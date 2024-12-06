@@ -32,15 +32,18 @@ namespace FamilyTree.Presentation
         {
             labelParents.Visible = false;
             labelChilds.Visible = false;
+            labelSpouse.Visible = false;
             labelListChilds.Text = "";
             labelListParents.Text = "";
             labelListChilds.Visible = false;
             labelListParents.Visible = false;
+            labelValueSpouse.Visible = false;
             var person = comboBoxListPerson.Text;
             if (!string.IsNullOrEmpty(person))
             {
                 var parents = RelationshipService.GetFamily(person, "родитель");
                 var childs = RelationshipService.GetFamily(person, "ребенок");
+                var spouse = RelationshipService.GetFamily(person, "супруг");
                 if(parents.Count != 0)
                 {
                     if (parents.Count == 1)
@@ -73,6 +76,12 @@ namespace FamilyTree.Presentation
                         labelListChilds.Text += $"{child}, ";
                     }
                     labelListChilds.Visible = true;
+                }
+                if(spouse.Count !=0)
+                {
+                    labelSpouse.Visible = true;
+                    labelValueSpouse.Text = spouse[0];
+                    labelValueSpouse.Visible = true;
                 }
             }
             else

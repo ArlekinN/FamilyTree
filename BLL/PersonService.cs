@@ -12,7 +12,9 @@ namespace FamilyTree.BLL
         public static void CreatePerson(Person person)
         {
             _personRepository.CreatePerson(person);
-            RoleInTreeService.CreateRoleInTree(person.Id);
+            var persons = GetAllPerson();
+            var idPerson = persons.FirstOrDefault(p => p.Lastname == person.Lastname && p.Firstname == person.Firstname && p.Surname == person.Surname).Id;
+            RoleInTreeService.CreateRoleInTree(idPerson);
         }
 
         // список имен всех людей
@@ -28,11 +30,11 @@ namespace FamilyTree.BLL
         // спиок имен людей, которых нет в древе
         public static List<string> GetPersonsOutsideTree()
         {
-            var idTree = TreeService.GetCurrentTree();
+            var idTree = TreeService.GetCurrentTree().Id;
             var persons = _personRepository.GetPersons().Result;
             var roles = RoleInTreeService.GetRoleInTree();
             var personOutsideTree = persons
-                .Where(person => roles.Any(r => r.IdTree == idTree && r.IdTypeRoleInTree == 3))
+                .Where(person => roles.Any(r => r.IdTree == idTree && r.IdTypeRoleInTree == 3 && r.IdPerson == person.Id))
                 .Select(person => $"{person.Lastname} {person.Firstname} {person.Surname}")
                 .ToList();
             return personOutsideTree;
@@ -41,11 +43,11 @@ namespace FamilyTree.BLL
         // список имен людей, которые есть в древе
         public static List<string> GetPersonsInTree()
         {
-            var idTree = TreeService.GetCurrentTree();
+            var idTree = TreeService.GetCurrentTree().Id;
             var persons = _personRepository.GetPersons().Result;
             var roles = RoleInTreeService.GetRoleInTree();
             var personOutsideTree = persons
-                .Where(person => roles.Any(r => r.IdTree == idTree && r.IdTypeRoleInTree != 3))
+                .Where(person => roles.Any(r => r.IdTree == idTree && r.IdTypeRoleInTree != 3 && r.IdPerson == person.Id))
                 .Select(person => $"{person.Lastname} {person.Firstname} {person.Surname}")
                 .ToList();
             return personOutsideTree;
@@ -81,14 +83,6 @@ namespace FamilyTree.BLL
             DateTime birthdayDescendant = DateTime.ParseExact(personDescendant, "yyyy-MM-dd", CultureInfo.InvariantCulture);
             return (birthdayDescendant.Year - birthdayAncestor.Year);
         }
-
-        // Создание нового древа
-        public static void CreateNewTree(string fullnameNewRoot)
-        {
-            _personRepository.ClearTree();
-            var person = GetPersonByFullName(fullnameNewRoot);
-            _personRepository.CreateNewRoot(person.Id);
-        }
         
         // Получение корня древа
         public static Person GetRootPerson()
@@ -102,12 +96,6 @@ namespace FamilyTree.BLL
         public static List<Person> GetAllPerson()
         {
             return _personRepository.GetPersons().Result;
-        }
-
-        // обновление роли в дереве у человека
-        public static void UpdateRoleInTree(int id, int idRoleInTree)
-        {
-            _personRepository.UpdateRoleInTree(id, idRoleInTree);
         }
     }
 }

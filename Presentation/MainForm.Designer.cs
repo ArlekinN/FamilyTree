@@ -33,6 +33,7 @@
             ButtonCreatePerson.Name = "ButtonCreatePerson";
             ButtonCreatePerson.Size = new Size(242, 29);
             ButtonCreatePerson.TabIndex = 0;
+            ButtonCreatePerson.TabStop = false;
             ButtonCreatePerson.Text = "Создать человека";
             ButtonCreatePerson.UseVisualStyleBackColor = true;
             ButtonCreatePerson.Click += ButtonCreatePerson_Click;
@@ -43,6 +44,7 @@
             ButtonAddPersonInTree.Name = "ButtonAddPersonInTree";
             ButtonAddPersonInTree.Size = new Size(242, 29);
             ButtonAddPersonInTree.TabIndex = 1;
+            ButtonAddPersonInTree.TabStop = false;
             ButtonAddPersonInTree.Text = "Добавить человека в древо";
             ButtonAddPersonInTree.UseVisualStyleBackColor = true;
             ButtonAddPersonInTree.Click += ButtonAddPersonInTree_Click;
@@ -53,6 +55,7 @@
             ButtonImmediateFamily.Name = "ButtonImmediateFamily";
             ButtonImmediateFamily.Size = new Size(242, 29);
             ButtonImmediateFamily.TabIndex = 3;
+            ButtonImmediateFamily.TabStop = false;
             ButtonImmediateFamily.Text = "Ближайщие родственники";
             ButtonImmediateFamily.UseVisualStyleBackColor = true;
             ButtonImmediateFamily.Click += ButtonImmediateFamily_Click;
@@ -63,6 +66,7 @@
             ButtonShowTree.Name = "ButtonShowTree";
             ButtonShowTree.Size = new Size(242, 29);
             ButtonShowTree.TabIndex = 4;
+            ButtonShowTree.TabStop = false;
             ButtonShowTree.Text = "Показать древо";
             ButtonShowTree.UseVisualStyleBackColor = true;
             ButtonShowTree.Click += ButtonShowTree_Click;
@@ -73,6 +77,7 @@
             ButtonAgeOfAncestorAtBirthOfDescendant.Name = "ButtonAgeOfAncestorAtBirthOfDescendant";
             ButtonAgeOfAncestorAtBirthOfDescendant.Size = new Size(312, 29);
             ButtonAgeOfAncestorAtBirthOfDescendant.TabIndex = 5;
+            ButtonAgeOfAncestorAtBirthOfDescendant.TabStop = false;
             ButtonAgeOfAncestorAtBirthOfDescendant.Text = "Возраст предка при рождении потомка";
             ButtonAgeOfAncestorAtBirthOfDescendant.UseVisualStyleBackColor = true;
             ButtonAgeOfAncestorAtBirthOfDescendant.Click += ButtonAgeOfAncestorAtBirthOfDescendant_Click;
@@ -83,6 +88,7 @@
             ButtonCreateTree.Name = "ButtonCreateTree";
             ButtonCreateTree.Size = new Size(242, 29);
             ButtonCreateTree.TabIndex = 6;
+            ButtonCreateTree.TabStop = false;
             ButtonCreateTree.Text = "Создать древо";
             ButtonCreateTree.UseVisualStyleBackColor = true;
             ButtonCreateTree.Click += ButtonCreateTree_Click;
@@ -94,6 +100,7 @@
             comboBoxRootTree.Name = "comboBoxRootTree";
             comboBoxRootTree.Size = new Size(223, 28);
             comboBoxRootTree.TabIndex = 7;
+            comboBoxRootTree.TabStop = false;
             // 
             // labelRootTree
             // 
@@ -130,6 +137,7 @@
             ButtonDeleteTree.Name = "ButtonDeleteTree";
             ButtonDeleteTree.Size = new Size(94, 29);
             ButtonDeleteTree.TabIndex = 11;
+            ButtonDeleteTree.TabStop = false;
             ButtonDeleteTree.Text = "Удалить";
             ButtonDeleteTree.UseVisualStyleBackColor = true;
             ButtonDeleteTree.Click += ButtonDeleteTree_Click;

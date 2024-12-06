@@ -10,7 +10,7 @@ namespace FamilyTree.BLL
         // создание роли для человека во всех деревьях
         public static void CreateRoleInTree(int idPerson)
         {
-            var idTrees = TreeService.GetIdsTree();
+            var idTrees = TreeService.GetTrees();
             foreach (var idTree in idTrees)
             {
                 var newRoleInTree = new RoleInTree(idPerson, idTree.Id, 3);
@@ -30,13 +30,20 @@ namespace FamilyTree.BLL
             _roleInTreeRepository.ChangeRolePerson(idPerson, idTree, idTypeRoleInTree);
         }
 
-        // Создать новый корень
+        // Создать новый корень и заполнить для других людей, что их нет в этом древе
         public static void CreateRoleRoot(string fullname)
         {
             var idTree = TreeService.GetCurrentTree().Id;
             var person = PersonService.GetPersonByFullName(fullname);
-            var newRoleInTree = new RoleInTree(person.Id, idTree, 1);
-            _roleInTreeRepository.CreateRoleRoot(newRoleInTree);
+            _roleInTreeRepository.CreateRole(new RoleInTree(person.Id, idTree, 1));
+            var persons = PersonService.GetAllPerson();
+            foreach (var item in persons)
+            {
+                if(item.Id != person.Id)
+                {
+                    _roleInTreeRepository.CreateRole(new RoleInTree(item.Id, idTree, 3));
+                }  
+            }
         }
 
         // удалить все роли у древа

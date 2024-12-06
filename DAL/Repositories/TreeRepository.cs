@@ -1,7 +1,6 @@
 ﻿using FamilyTree.Models;
 using Microsoft.Data.Sqlite;
 using SQLitePCL;
-using System;
 
 namespace FamilyTree.DAL.Repositories
 {
@@ -91,6 +90,7 @@ namespace FamilyTree.DAL.Repositories
             await command.ExecuteNonQueryAsync();
         }
 
+        // удаление древа
         public async void DeleteTree(int id)
         {
             var relationships = new List<Relationship>();
@@ -99,7 +99,7 @@ namespace FamilyTree.DAL.Repositories
             await connection.OpenAsync();
             SqliteCommand command = new() { Connection = connection };
             command.CommandText = @"delete from Tree
-                    where IdTree=@id";
+                    where Id=@id";
             command.Parameters.AddWithValue("@id", id);
             await command.ExecuteNonQueryAsync();
         }

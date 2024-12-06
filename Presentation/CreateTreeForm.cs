@@ -38,6 +38,7 @@ namespace FamilyTree.Presentation
                 labelResult.ForeColor = Color.Green;
                 labelResult.Text = "Успешно";
                 labelResult.Visible = true;
+                _mainForm.LoadDataRootTree();
             }
             else
             {

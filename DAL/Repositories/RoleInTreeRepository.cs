@@ -25,14 +25,15 @@ namespace FamilyTree.DAL.Repositories
             using var connection = new SqliteConnection(_connectionString);
             await connection.OpenAsync();
             using var command = new SqliteCommand(@"
-                INSERT INTO RoleInTree(IdPerson, IdTree, IdRoleInTree)
-                VALUES(@idPerson, @idTree, @idRoleInTree)", connection);
+                INSERT INTO RoleInTree(IdPerson, IdTree, IdTypeRoleInTree)
+                VALUES(@idPerson, @idTree, @idTypeRoleInTree)", connection);
             command.Parameters.AddWithValue("@idPerson", roleInTree.IdPerson);
             command.Parameters.AddWithValue("@idTree", roleInTree.IdTree);
-            command.Parameters.AddWithValue("@idRoleInTree", roleInTree.IdTypeRoleInTree);
+            command.Parameters.AddWithValue("@idTypeRoleInTree", roleInTree.IdTypeRoleInTree);
             await command.ExecuteNonQueryAsync();
         }
 
+        // список всез ролей
         public async Task<List<RoleInTree>> GetRoleInTree()
         {
             var roles = new List<RoleInTree>();
@@ -48,9 +49,9 @@ namespace FamilyTree.DAL.Repositories
                     var role = new RoleInTree
                     {
                         Id = Convert.ToInt32(reader["Id"]),
-                        IdPerson = Convert.ToInt32(reader["Lastname"]),
-                        IdTree = Convert.ToInt32(reader["Firstname"]),
-                        IdTypeRoleInTree = Convert.ToInt32(reader["Surname"])
+                        IdPerson = Convert.ToInt32(reader["IdPerson"]),
+                        IdTree = Convert.ToInt32(reader["IdTree"]),
+                        IdTypeRoleInTree = Convert.ToInt32(reader["IdTypeRoleInTree"])
                     };
                     roles.Add(role);
                 }
@@ -74,17 +75,18 @@ namespace FamilyTree.DAL.Repositories
             await command.ExecuteNonQueryAsync();
         }
 
-        // создание роли корня в древе
-        public async void CreateRoleRoot(RoleInTree roleInTree)
+        // создание роли 
+        public async void CreateRole(RoleInTree roleInTree)
         {
             Batteries.Init();
             using var connection = new SqliteConnection(_connectionString);
             await connection.OpenAsync();
             using var command = new SqliteCommand(@"
-                INSERT INTO RoleInTree(IdPerson, IdTree, IdRoleInTree)
-                VALUES(@idPerson, @idTree, 1)", connection);
+                INSERT INTO RoleInTree(IdPerson, IdTree, IdTypeRoleInTree)
+                VALUES(@idPerson, @idTree, @idTypeRoleInTree)", connection);
             command.Parameters.AddWithValue("@idPerson", roleInTree.IdPerson);
             command.Parameters.AddWithValue("@idTree", roleInTree.IdTree);
+            command.Parameters.AddWithValue("@idTypeRoleInTree", roleInTree.IdTypeRoleInTree);
             await command.ExecuteNonQueryAsync();
         }
 

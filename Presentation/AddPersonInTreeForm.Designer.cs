@@ -59,7 +59,7 @@
             comboBoxListPersonOutsideTree.FormattingEnabled = true;
             comboBoxListPersonOutsideTree.Location = new Point(335, 55);
             comboBoxListPersonOutsideTree.Name = "comboBoxListPersonOutsideTree";
-            comboBoxListPersonOutsideTree.Size = new Size(204, 28);
+            comboBoxListPersonOutsideTree.Size = new Size(236, 28);
             comboBoxListPersonOutsideTree.TabIndex = 3;
             // 
             // ButtonAddPersonInTree
@@ -96,7 +96,7 @@
             comboBoxListPersonInTree.FormattingEnabled = true;
             comboBoxListPersonInTree.Location = new Point(335, 110);
             comboBoxListPersonInTree.Name = "comboBoxListPersonInTree";
-            comboBoxListPersonInTree.Size = new Size(205, 28);
+            comboBoxListPersonInTree.Size = new Size(236, 28);
             comboBoxListPersonInTree.TabIndex = 7;
             // 
             // comboBoxListRelationship

@@ -24,6 +24,8 @@
             labelChilds = new Label();
             labelListParents = new Label();
             labelListChilds = new Label();
+            labelSpouse = new Label();
+            labelValueSpouse = new Label();
             SuspendLayout();
             // 
             // ButtonBack
@@ -110,11 +112,33 @@
             labelListChilds.TabIndex = 8;
             labelListChilds.Visible = false;
             // 
+            // labelSpouse
+            // 
+            labelSpouse.AutoSize = true;
+            labelSpouse.Location = new Point(34, 265);
+            labelSpouse.Name = "labelSpouse";
+            labelSpouse.Size = new Size(59, 20);
+            labelSpouse.TabIndex = 9;
+            labelSpouse.Text = "Супруг:";
+            labelSpouse.Visible = false;
+            // 
+            // labelValueSpouse
+            // 
+            labelValueSpouse.AutoSize = true;
+            labelValueSpouse.Location = new Point(151, 271);
+            labelValueSpouse.Name = "labelValueSpouse";
+            labelValueSpouse.Size = new Size(50, 20);
+            labelValueSpouse.TabIndex = 10;
+            labelValueSpouse.Text = "label1";
+            labelValueSpouse.Visible = false;
+            // 
             // ImmediateFamilyForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(labelValueSpouse);
+            Controls.Add(labelSpouse);
             Controls.Add(labelListChilds);
             Controls.Add(labelListParents);
             Controls.Add(labelChilds);
@@ -139,5 +163,7 @@
         private Label labelChilds;
         private Label labelListParents;
         private Label labelListChilds;
+        private Label labelSpouse;
+        private Label labelValueSpouse;
     }
 }

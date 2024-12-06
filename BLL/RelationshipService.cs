@@ -87,7 +87,6 @@ namespace FamilyTree.BLL
                 {
                     throw new Exception("Ребенок не может быть младше родителя");
                 }
-
             }
             
             // создания заданной связи 
@@ -99,7 +98,7 @@ namespace FamilyTree.BLL
             {
                 var inverseRelationship = new Relationship(personInTree.Id, newPerson.Id, idTypeRelationship, idTree);
                 _relationshipRepository.CreateRelationship(inverseRelationship);
-                // дети существующего супруга, также становятся детьми нового супруга
+                // дети существующего супруга также становятся детьми нового супруга
                 var childsRelationship = relationships
                     .Where(r => r.IdPerson == personInTree.Id && r.IdTypeRelationship == 3)
                     .ToList();
@@ -111,11 +110,22 @@ namespace FamilyTree.BLL
                     _relationshipRepository.CreateRelationship(newRelationship);
                 }
             }
+
             else if (typeRelationship == "ребенок")
             {
                 var inverseRelationship = new Relationship(personInTree.Id, newPerson.Id, 3, idTree);
                 _relationshipRepository.CreateRelationship(inverseRelationship);
+                // создание связи для супруга
+                var spouse = relationships.FirstOrDefault(r => r.IdPerson == personInTree.Id && r.IdTree == idTree && r.IdTypeRelationship == 1 );
+                if (spouse is not null)
+                {
+                    var newRelationship = new Relationship(spouse.IdRelative, newPerson.Id, 3, idTree);
+                    _relationshipRepository.CreateRelationship(newRelationship);
+                    newRelationship = new Relationship(newPerson.Id, spouse.IdRelative, 2, idTree);
+                    _relationshipRepository.CreateRelationship(newRelationship);
+                }
             }
+
             // родитель
             else
             {
@@ -136,7 +146,7 @@ namespace FamilyTree.BLL
             }  
         }
 
-        // список имен родственников человека (родители и дети)
+        // список имен родственников человека (родители или дети)
         public static List<string> GetFamily(string fullname, string typeRelationship)
         {
             var idTree = TreeService.GetCurrentTree().Id;
@@ -144,8 +154,7 @@ namespace FamilyTree.BLL
             var persons = PersonService.GetAllPerson();
             var relationships = _relationshipRepository.GetRelationships().Result;
             int idTypeRelationship = TypeRelationshipService.GetRelationships().FirstOrDefault(t => t.Title == typeRelationship).Id;
-            List<Relationship> relationshipPerson = null;
-            relationshipPerson = relationships
+            var relationshipPerson = relationships
                 .Where(r => r.IdRelative == person.Id && r.IdTypeRelationship == idTypeRelationship && r.IdTree == idTree)
                 .ToList();
             var listFullNames = persons

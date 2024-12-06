@@ -61,46 +61,5 @@ namespace FamilyTree.DAL.Repositories
             }
             return persons;
         }
-
-        // обновление роли человека в древе УДАЛИТЬ????
-        public async void UpdateRoleInTree(int id, int idRoleInTree)
-        {
-            Batteries.Init();
-            using var connection = new SqliteConnection(_connectionString);
-            await connection.OpenAsync();
-            using var command = new SqliteCommand(@"
-                    UPDATE Person
-                    SET IdRoleInTree = @idRoleInTree
-                    WHERE Id=@id", connection);
-            command.Parameters.AddWithValue("@id", id);
-            command.Parameters.AddWithValue("@idRoleInTree", idRoleInTree);
-            await command.ExecuteNonQueryAsync();
-        }
-
-        // очищение древа УДАЛИТЬ??? или изменить
-        public async void ClearTree()
-        {
-            Batteries.Init();
-            using var connection = new SqliteConnection(_connectionString);
-            await connection.OpenAsync();
-            using var command = new SqliteCommand(@"
-                    UPDATE Person
-                    SET IdRoleInTree = 3", connection);
-            await command.ExecuteNonQueryAsync();
-        }
-
-        // создание нового древа // УДАЛИТЬ????
-        public async void CreateNewRoot(int id)
-        {
-            Batteries.Init();
-            using var connection = new SqliteConnection(_connectionString);
-            await connection.OpenAsync();
-            using var command = new SqliteCommand(@"
-                    UPDATE Person
-                    SET IdRoleInTree = 1
-                    WHERE Id=@id", connection);
-            command.Parameters.AddWithValue("@id", id);
-            await command.ExecuteNonQueryAsync();
-        }
     }
 }

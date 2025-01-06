@@ -1,8 +1,7 @@
-﻿namespace FamilyTree.Models
+﻿namespace FamilyTree.DAL.Models
 {
-    public class Person
+    public class Person : BaseIdEntity
     {
-        public int Id { get; set; }
         public string Lastname { get; set; }
         public string Firstname { get; set; }
         public string Surname { get; set; }

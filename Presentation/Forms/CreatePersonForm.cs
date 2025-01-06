@@ -1,5 +1,5 @@
 ﻿using FamilyTree.BLL;
-using FamilyTree.Models;
+using FamilyTree.DAL.Models;
 
 namespace FamilyTree.Presentation
 {

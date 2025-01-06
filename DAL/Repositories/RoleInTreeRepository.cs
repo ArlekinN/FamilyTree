@@ -1,7 +1,6 @@
-﻿using FamilyTree.Models;
+﻿using FamilyTree.DAL.Models;
 using Microsoft.Data.Sqlite;
 using SQLitePCL;
-using System;
 
 namespace FamilyTree.DAL.Repositories
 {

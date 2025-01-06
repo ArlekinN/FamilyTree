@@ -1,4 +1,4 @@
-﻿using FamilyTree.Models;
+﻿using FamilyTree.DAL.Models;
 using Microsoft.Data.Sqlite;
 using SQLitePCL;
 

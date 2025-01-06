@@ -1,8 +1,7 @@
-﻿namespace FamilyTree.Models
+﻿namespace FamilyTree.DAL.Models
 {
-    public class Relationship
+    public class Relationship : BaseIdEntity
     {
-        public int Id { get; set; }
         public int IdPerson { get; set; }
         public int IdRelative { get; set; }
         public int IdTypeRelationship { get; set; }

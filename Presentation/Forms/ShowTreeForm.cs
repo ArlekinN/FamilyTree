@@ -1,7 +1,5 @@
 ﻿using FamilyTree.BLL;
-using FamilyTree.Models;
-using System.Windows.Forms;
-using System.Xml.Linq;
+using FamilyTree.DAL.Models;
 
 namespace FamilyTree.Presentation
 {

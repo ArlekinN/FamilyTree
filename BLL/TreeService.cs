@@ -1,5 +1,5 @@
 ﻿using FamilyTree.DAL.Repositories;
-using FamilyTree.Models;
+using FamilyTree.DAL.Models;
 
 namespace FamilyTree.BLL
 {

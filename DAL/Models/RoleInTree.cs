@@ -1,8 +1,7 @@
-﻿namespace FamilyTree.Models
+﻿namespace FamilyTree.DAL.Models
 {
-    public class RoleInTree
+    public class RoleInTree : BaseIdEntity
     {
-        public int Id { get; set; }
         public int IdPerson { get; set; }
         public int IdTree { get; set; }
         public int IdTypeRoleInTree { get; set; }

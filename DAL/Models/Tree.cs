@@ -1,8 +1,7 @@
-﻿namespace FamilyTree.Models
+﻿namespace FamilyTree.DAL.Models
 {
-    public class Tree
+    public class Tree : BaseIdEntity
     {
-        public int Id { get; set; }
         public int IdPerson { get; set; }
         public bool CurrentTree { get; set; }
         public Tree() { }

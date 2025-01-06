@@ -4,7 +4,7 @@ using SQLitePCL;
 
 namespace FamilyTree.DAL.Repositories
 {
-    internal class PersonRepository: IRepository
+    public class PersonRepository: IRepository
     {
         private static PersonRepository Instance { get; set; }
         private PersonRepository() { }

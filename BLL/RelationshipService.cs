@@ -4,7 +4,7 @@ using System.Globalization;
 
 namespace FamilyTree.BLL
 {
-    internal class RelationshipService
+    public class RelationshipService
     {
         private static readonly RelationshipRepository _relationshipRepository = RelationshipRepository.GetInstance();
         

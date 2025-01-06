@@ -1,6 +1,6 @@
 ﻿namespace FamilyTree.Models
 {
-    internal class TypeRelationship
+    public class TypeRelationship
     {
         public int Id { get; set; }
         public string Title { get; set; }

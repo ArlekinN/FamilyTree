@@ -2,7 +2,7 @@
 using SQLitePCL;
 namespace FamilyTree.DAL
 {
-    internal class Initialization
+    public class Initialization
     {
         private static readonly string DbPath = "FamilyTreeDB.db";
         public static void InitializationData()

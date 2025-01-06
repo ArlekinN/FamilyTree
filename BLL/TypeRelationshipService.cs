@@ -3,7 +3,7 @@ using FamilyTree.Models;
 
 namespace FamilyTree.BLL
 {
-    internal class TypeRelationshipService
+    public class TypeRelationshipService
     {
         private static readonly TypeRelationshipRepository _typeRelationshipRepository = TypeRelationshipRepository.GetInstance();
         

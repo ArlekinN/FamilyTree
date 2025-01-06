@@ -5,7 +5,7 @@ using System;
 
 namespace FamilyTree.DAL.Repositories
 {
-    internal class RoleInTreeRepository: IRepository
+    public class RoleInTreeRepository: IRepository
     {
         private static RoleInTreeRepository Instance { get; set; }
         private RoleInTreeRepository() { }

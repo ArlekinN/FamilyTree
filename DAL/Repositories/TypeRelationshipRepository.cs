@@ -3,7 +3,7 @@ using Microsoft.Data.Sqlite;
 using SQLitePCL;
 namespace FamilyTree.DAL.Repositories
 {
-    internal class TypeRelationshipRepository: IRepository
+    public class TypeRelationshipRepository: IRepository
     {
         private static TypeRelationshipRepository Instance { get; set; }
         private TypeRelationshipRepository() { }

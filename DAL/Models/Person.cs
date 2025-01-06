@@ -1,6 +1,6 @@
 ﻿namespace FamilyTree.Models
 {
-    internal class Person
+    public class Person
     {
         public int Id { get; set; }
         public string Lastname { get; set; }

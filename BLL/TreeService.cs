@@ -3,7 +3,7 @@ using FamilyTree.Models;
 
 namespace FamilyTree.BLL
 {
-    internal class TreeService
+    public class TreeService
     {
         private static readonly TreeRepository _treeRepository = TreeRepository.GetInstance();
 

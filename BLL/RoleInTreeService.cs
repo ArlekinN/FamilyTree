@@ -3,7 +3,7 @@ using FamilyTree.Models;
 
 namespace FamilyTree.BLL
 {
-    internal class RoleInTreeService
+    public class RoleInTreeService
     {
         private static readonly RoleInTreeRepository _roleInTreeRepository = RoleInTreeRepository.GetInstance();
 

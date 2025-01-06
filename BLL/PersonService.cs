@@ -4,7 +4,7 @@ using System.Globalization;
 
 namespace FamilyTree.BLL
 {
-    internal class PersonService
+    public class PersonService
     {
         private static readonly PersonRepository _personRepository = PersonRepository.GetInstance();
         

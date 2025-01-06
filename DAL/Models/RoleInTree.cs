@@ -1,6 +1,6 @@
 ﻿namespace FamilyTree.Models
 {
-    internal class RoleInTree
+    public class RoleInTree
     {
         public int Id { get; set; }
         public int IdPerson { get; set; }

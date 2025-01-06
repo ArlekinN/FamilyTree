@@ -1,7 +1,8 @@
 ﻿using FamilyTree.DAL.Repositories;
 using FamilyTree.DAL.Models;
+using FamilyTree.BLL.DTO;
 
-namespace FamilyTree.BLL
+namespace FamilyTree.BLL.Services
 {
     public class TreeService
     {
@@ -27,7 +28,20 @@ namespace FamilyTree.BLL
         }
 
         // список древ
-        public static List<Tree> GetTrees()
+        public static List<TreeDTO> GetTrees()
+        {
+            var trees =  _treeRepository.GetTrees().Result;
+            return trees
+               .Select(p => new TreeDTO
+               {
+                   IdPerson = p.IdPerson,
+                   CurrentTree = p.CurrentTree
+               })
+               .ToList();
+        }
+
+        // список древ c id
+        public static List<Tree> GetTreesWithID()
         {
             return _treeRepository.GetTrees().Result;
         }

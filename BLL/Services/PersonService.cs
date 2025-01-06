@@ -1,8 +1,9 @@
 ﻿using FamilyTree.DAL.Repositories;
 using FamilyTree.DAL.Models;
+using FamilyTree.BLL.DTO;
 using System.Globalization;
 
-namespace FamilyTree.BLL
+namespace FamilyTree.BLL.Services
 {
     public class PersonService
     {
@@ -57,12 +58,10 @@ namespace FamilyTree.BLL
         public static Person GetPersonByFullName(string fullName)
         {
             string[] partsFullName = fullName.Split(' ');
-            var lastName = partsFullName[0];
-            var firstName = partsFullName[1];
-            var surname = partsFullName[2];
+            PersonFullNameDTO personDTO = new (partsFullName[0], partsFullName[1], partsFullName[2]); 
             var persons = _personRepository.GetPersons().Result;
             var person = persons
-                .FirstOrDefault(p => p.Lastname == lastName && p.Firstname == firstName && p.Surname == surname);
+                .FirstOrDefault(p => p.Lastname == personDTO.Lastname && p.Firstname == personDTO.Firstname && p.Surname == personDTO.Surname);
             return person;
         }
 

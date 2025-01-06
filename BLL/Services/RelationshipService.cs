@@ -1,8 +1,9 @@
 ﻿using FamilyTree.DAL.Repositories;
 using FamilyTree.DAL.Models;
+using FamilyTree.BLL.DTO;
 using System.Globalization;
 
-namespace FamilyTree.BLL
+namespace FamilyTree.BLL.Services
 {
     public class RelationshipService
     {
@@ -192,9 +193,18 @@ namespace FamilyTree.BLL
         }
 
         // список всех родственных связей
-        public static List<Relationship> GetRelationships()
+        public static List<RelationshipDTO> GetRelationships()
         {
-            return _relationshipRepository.GetRelationships().Result;
+            var relationships = _relationshipRepository.GetRelationships().Result;
+            return relationships
+                .Select(p => new RelationshipDTO
+                {
+                    IdPerson = p.IdPerson,
+                    IdRelative = p.IdRelative,
+                    IdTypeRelationship = p.IdTypeRelationship,
+                    IdTree = p.IdTree
+                })
+                .ToList();
         }
 
         // удаление связей у древа

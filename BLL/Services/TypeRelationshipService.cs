@@ -1,7 +1,7 @@
 ﻿using FamilyTree.DAL.Repositories;
 using FamilyTree.DAL.Models;
 
-namespace FamilyTree.BLL
+namespace FamilyTree.BLL.Services
 {
     public class TypeRelationshipService
     {

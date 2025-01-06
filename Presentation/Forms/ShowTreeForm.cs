@@ -1,4 +1,5 @@
-﻿using FamilyTree.BLL;
+﻿using FamilyTree.BLL.Services;
+using FamilyTree.BLL.DTO;
 using FamilyTree.DAL.Models;
 
 namespace FamilyTree.Presentation
@@ -32,7 +33,7 @@ namespace FamilyTree.Presentation
             treeViewFamily.ExpandAll();
         }
 
-        private void BuildChildNodes(TreeNode node, Person currentPerson, List<Person> persons, List<Relationship> relationships)
+        private void BuildChildNodes(TreeNode node, Person currentPerson, List<Person> persons, List<RelationshipDTO> relationships)
         {
             var idTree = TreeService.GetCurrentTree().Id;
             var spouseRelationship = relationships.FirstOrDefault(r => r.IdPerson == currentPerson.Id && r.IdTypeRelationship == 1 && r.IdTree == idTree);

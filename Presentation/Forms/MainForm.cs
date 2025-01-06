@@ -1,4 +1,4 @@
-﻿using FamilyTree.BLL;
+﻿using FamilyTree.BLL.Services;
 
 namespace FamilyTree.Presentation
 {
@@ -134,7 +134,7 @@ namespace FamilyTree.Presentation
             {
                 var fullname = comboBoxRootTree.Text;
                 var person = PersonService.GetPersonByFullName(fullname);
-                var trees = TreeService.GetTrees();
+                var trees = TreeService.GetTreesWithID();
                 var tree = trees.FirstOrDefault(t => t.IdPerson == person.Id).Id;
 
                 RelationshipService.DeleteRelationship(tree);

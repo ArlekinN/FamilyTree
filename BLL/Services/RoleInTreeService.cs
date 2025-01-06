@@ -1,7 +1,8 @@
 ﻿using FamilyTree.DAL.Repositories;
 using FamilyTree.DAL.Models;
+using FamilyTree.BLL.DTO;
 
-namespace FamilyTree.BLL
+namespace FamilyTree.BLL.Services
 {
     public class RoleInTreeService
     {
@@ -10,7 +11,7 @@ namespace FamilyTree.BLL
         // создание роли для человека во всех деревьях
         public static void CreateRoleInTree(int idPerson)
         {
-            var idTrees = TreeService.GetTrees();
+            var idTrees = TreeService.GetTreesWithID();
             foreach (var idTree in idTrees)
             {
                 var newRoleInTree = new RoleInTree(idPerson, idTree.Id, 3);
@@ -19,9 +20,17 @@ namespace FamilyTree.BLL
         }
 
         // список ролей
-        public static List<RoleInTree> GetRoleInTree()
+        public static List<RoleInTreeDTO> GetRoleInTree()
         {
-            return _roleInTreeRepository.GetRoleInTree().Result;
+            var roles =  _roleInTreeRepository.GetRoleInTree().Result;
+            return roles
+               .Select(p => new RoleInTreeDTO
+               {
+                   IdPerson = p.IdPerson,
+                   IdTree = p.IdTree,
+                   IdTypeRoleInTree = p.IdTypeRoleInTree
+               })
+               .ToList();
         }
 
         // изменение роли человека в древе

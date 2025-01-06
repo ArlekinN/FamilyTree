@@ -1,4 +1,4 @@
-﻿using FamilyTree.BLL;
+﻿using FamilyTree.BLL.Services;
 using Microsoft.Msagl.Drawing; 
 using Microsoft.Msagl.GraphViewerGdi;
 

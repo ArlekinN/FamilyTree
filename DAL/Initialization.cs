@@ -1,12 +1,15 @@
-﻿using Microsoft.Data.Sqlite;
+﻿using FamilyTree.DAL.Repositories;
+using Microsoft.Data.Sqlite;
+using Microsoft.Extensions.Configuration;
 using SQLitePCL;
 namespace FamilyTree.DAL
 {
-    public class Initialization
+    public static class Initialization
     {
-        private static readonly string DbPath = "FamilyTreeDB.db";
+        private static string DbPath;
         public static void InitializationData()
         {
+            DbPath = ConfigManager.GetConfig().GetConnectionString("DataSource");
             if (!File.Exists(DbPath))
             {
                 CreateDatabase();

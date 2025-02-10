@@ -9,18 +9,8 @@
   ```
     git clone https://github.com/ArlekinN/FamilyTree.git
   ```
-  2. Переход в папку проекта
-  ```
-    cd FamilyTree
-  ```
-  2. Компиляция проекта
-  ```
-  dotnet build
-  ```
-  3. Запуск проекта
-  ```
-  dotnet run
-  ```
+  2. Назначить в качестве запускаемого проекта FamilyTree.Presentation
+  3. Запустить проект
 ## Результат запуска проекта
 <img src="https://github.com/user-attachments/assets/4fd36898-0f18-4a0d-8ca3-af1aca41c102" width="500" height="300" />
 

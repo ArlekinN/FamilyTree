@@ -1,6 +1,4 @@
-﻿using FamilyTree.DAL.Repositories;
-using Microsoft.Data.Sqlite;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Data.Sqlite;
 using SQLitePCL;
 namespace FamilyTree.DAL
 {
@@ -9,7 +7,7 @@ namespace FamilyTree.DAL
         private static string DbPath;
         public static void InitializationData()
         {
-            DbPath = ConfigManager.GetConfig().GetConnectionString("DataSource");
+            DbPath = Path.Combine(AppContext.BaseDirectory, "FamilyTreeDB.db");
             if (!File.Exists(DbPath))
             {
                 CreateDatabase();

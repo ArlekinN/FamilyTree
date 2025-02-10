@@ -15,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\BLL\FamilyTree.BLL.csproj" />
     <ProjectReference Include="..\DAL\FamilyTree.DAL.csproj" />
+    <ProjectReference Include="..\FamilyTree.Common\FamilyTree.Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>

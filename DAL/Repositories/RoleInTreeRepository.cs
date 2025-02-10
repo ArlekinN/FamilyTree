@@ -21,7 +21,7 @@ namespace FamilyTree.DAL.Repositories
         public async void CreateRoleInTree(RoleInTree roleInTree)
         {
             Batteries.Init();
-            using var connection = new SqliteConnection(_connectionString);
+            using var connection = new SqliteConnection(ConnectionString);
             await connection.OpenAsync();
             using var command = new SqliteCommand(@"
                 INSERT INTO RoleInTree(IdPerson, IdTree, IdTypeRoleInTree)
@@ -37,7 +37,7 @@ namespace FamilyTree.DAL.Repositories
         {
             var roles = new List<RoleInTree>();
             Batteries.Init();
-            using var connection = new SqliteConnection(_connectionString);
+            using var connection = new SqliteConnection(ConnectionString);
             await connection.OpenAsync();
             SqliteCommand command = new() { Connection = connection };
             command.CommandText = @"select * from RoleInTree";
@@ -62,7 +62,7 @@ namespace FamilyTree.DAL.Repositories
         public async void ChangeRolePerson(int idPerson, int idTree, int idTypeRoleInTree)
         {
             Batteries.Init();
-            using var connection = new SqliteConnection(_connectionString);
+            using var connection = new SqliteConnection(ConnectionString);
             await connection.OpenAsync();
             using var command = new SqliteCommand(@"
                     UPDATE RoleInTree
@@ -78,7 +78,7 @@ namespace FamilyTree.DAL.Repositories
         public async void CreateRole(RoleInTree roleInTree)
         {
             Batteries.Init();
-            using var connection = new SqliteConnection(_connectionString);
+            using var connection = new SqliteConnection(ConnectionString);
             await connection.OpenAsync();
             using var command = new SqliteCommand(@"
                 INSERT INTO RoleInTree(IdPerson, IdTree, IdTypeRoleInTree)
@@ -94,7 +94,7 @@ namespace FamilyTree.DAL.Repositories
         {
             var relationships = new List<Relationship>();
             Batteries.Init();
-            using var connection = new SqliteConnection(_connectionString);
+            using var connection = new SqliteConnection(ConnectionString);
             await connection.OpenAsync();
             SqliteCommand command = new() { Connection = connection };
             command.CommandText = @"delete from RoleInTree

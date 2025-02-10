@@ -1,3 +1,4 @@
+using FamilyTree.Common;
 using FamilyTree.DAL;
 
 namespace FamilyTree
@@ -8,7 +9,7 @@ namespace FamilyTree
         static void Main()
         {
             Initialization.InitializationData();
-
+            Logger.Initialize();
             Application.Run(new Presentation.MainForm());
         }
     }

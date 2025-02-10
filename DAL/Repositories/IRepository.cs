@@ -1,20 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
-
-namespace FamilyTree.DAL.Repositories
+﻿namespace FamilyTree.DAL.Repositories
 {
     public abstract class IRepository
     {
-        protected readonly string _connectionString;
-
-        protected IRepository()
-        {
-            _connectionString = LoadConnectionString();
-        }
-
-        private static string LoadConnectionString()
-        {
-            var configuration = ConfigManager.GetConfig();
-            return configuration.GetConnectionString("DataSource");
-        }
-    }
+        protected static string ConnectionString { get; } = $"Data Source={Path.Combine(AppContext.BaseDirectory, "FamilyTreeDB.db")}";
+    } 
 }

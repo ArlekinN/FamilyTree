@@ -21,7 +21,7 @@ namespace FamilyTree.DAL.Repositories
         {
             var typesRelationship = new List<TypeRelationship>();
             Batteries.Init();
-            using var connection = new SqliteConnection(_connectionString);
+            using var connection = new SqliteConnection(ConnectionString);
             await connection.OpenAsync();
             SqliteCommand command = new() { Connection = connection };
             command.CommandText = @"select * from TypeRelationship";

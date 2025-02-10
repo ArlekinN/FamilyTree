@@ -21,7 +21,7 @@ namespace FamilyTree.DAL.Repositories
         public async void CreatePerson(Person person)
         {
             Batteries.Init();
-            using var connection = new SqliteConnection(_connectionString);
+            using var connection = new SqliteConnection(ConnectionString);
             await connection.OpenAsync();
             using var command = new SqliteCommand(@"
                 INSERT INTO Person(Lastname, Firstname, Surname, Birthday, Gender)
@@ -39,7 +39,7 @@ namespace FamilyTree.DAL.Repositories
         {
             var persons = new List<Person>();
             Batteries.Init();
-            using var connection = new SqliteConnection(_connectionString);
+            using var connection = new SqliteConnection(ConnectionString);
             await connection.OpenAsync();
             SqliteCommand command = new() { Connection = connection };
             command.CommandText = @"select * from Person";

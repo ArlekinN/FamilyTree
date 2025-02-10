@@ -22,7 +22,7 @@ namespace FamilyTree.DAL.Repositories
         {
             var trees = new List<Tree>();
             Batteries.Init();
-            using var connection = new SqliteConnection(_connectionString);
+            using var connection = new SqliteConnection(ConnectionString);
             await connection.OpenAsync();
             SqliteCommand command = new() { Connection = connection };
             command.CommandText = @"select * from Tree";
@@ -46,7 +46,7 @@ namespace FamilyTree.DAL.Repositories
         public async void ChangeCurrentTree(int id)
         {
             Batteries.Init();
-            using var connection = new SqliteConnection(_connectionString);
+            using var connection = new SqliteConnection(ConnectionString);
             await connection.OpenAsync();
             SqliteCommand command = new() { Connection = connection };
             command.CommandText = @"
@@ -66,7 +66,7 @@ namespace FamilyTree.DAL.Repositories
         public async void ChangeRootCurrentTree(int id)
         {
             Batteries.Init();
-            using var connection = new SqliteConnection(_connectionString);
+            using var connection = new SqliteConnection(ConnectionString);
             await connection.OpenAsync();
             SqliteCommand command = new() { Connection = connection };
             command = new SqliteCommand(@"
@@ -81,7 +81,7 @@ namespace FamilyTree.DAL.Repositories
         public async void CreateTree(int id)
         {
             Batteries.Init();
-            using var connection = new SqliteConnection(_connectionString);
+            using var connection = new SqliteConnection(ConnectionString);
             await connection.OpenAsync();
             using var command = new SqliteCommand(@"
                 INSERT INTO Tree(idPerson, CurrentTree)
@@ -95,7 +95,7 @@ namespace FamilyTree.DAL.Repositories
         {
             var relationships = new List<Relationship>();
             Batteries.Init();
-            using var connection = new SqliteConnection(_connectionString);
+            using var connection = new SqliteConnection(ConnectionString);
             await connection.OpenAsync();
             SqliteCommand command = new() { Connection = connection };
             command.CommandText = @"delete from Tree

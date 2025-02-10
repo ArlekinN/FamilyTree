@@ -21,7 +21,7 @@ namespace FamilyTree.DAL.Repositories
         public async void CreateRelationship(Relationship relationship)
         {
             Batteries.Init();
-            using var connection = new SqliteConnection(_connectionString);
+            using var connection = new SqliteConnection(ConnectionString);
             await connection.OpenAsync();
             using var command = new SqliteCommand(@"
                 INSERT INTO Relationship(IdPerson, IdRelative, IdTypeRelationship, IdTree)
@@ -38,7 +38,7 @@ namespace FamilyTree.DAL.Repositories
         {
             var relationships = new List<Relationship>();
             Batteries.Init();
-            using var connection = new SqliteConnection(_connectionString);
+            using var connection = new SqliteConnection(ConnectionString);
             await connection.OpenAsync();
             SqliteCommand command = new() { Connection = connection };
             command.CommandText = @"select * from Relationship";
@@ -65,7 +65,7 @@ namespace FamilyTree.DAL.Repositories
         {
             var idListDescendant = new List<int>();
             Batteries.Init();
-            using var connection = new SqliteConnection(_connectionString);
+            using var connection = new SqliteConnection(ConnectionString);
             await connection.OpenAsync();
             SqliteCommand command = new() { Connection = connection };
             command.CommandText = @"select idRelative from Relationship
@@ -96,7 +96,7 @@ namespace FamilyTree.DAL.Repositories
         {
             var personsWithChilds = new List<int>();
             Batteries.Init();
-            using var connection = new SqliteConnection(_connectionString);
+            using var connection = new SqliteConnection(ConnectionString);
             await connection.OpenAsync();
             SqliteCommand command = new() { Connection = connection };
             command.CommandText = @"select IdPerson from Relationship
@@ -117,7 +117,7 @@ namespace FamilyTree.DAL.Repositories
         {
             var relationships = new List<Relationship>();
             Batteries.Init();
-            using var connection = new SqliteConnection(_connectionString);
+            using var connection = new SqliteConnection(ConnectionString);
             await connection.OpenAsync();
             SqliteCommand command = new() { Connection = connection };
             command.CommandText = @"delete from Relationship
@@ -131,7 +131,7 @@ namespace FamilyTree.DAL.Repositories
         {
             var idListAncestors = new List<int>();
             Batteries.Init();
-            using var connection = new SqliteConnection(_connectionString);
+            using var connection = new SqliteConnection(ConnectionString);
             await connection.OpenAsync();
             SqliteCommand command = new() { Connection = connection };
             command.CommandText = @"select idPerson from Relationship

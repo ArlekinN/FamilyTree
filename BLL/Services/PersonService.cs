@@ -2,37 +2,38 @@
 using FamilyTree.DAL.Models;
 using FamilyTree.BLL.DTO;
 using System.Globalization;
+using Serilog;
 
 namespace FamilyTree.BLL.Services
 {
     public class PersonService
     {
-        private static readonly PersonRepository _personRepository = PersonRepository.GetInstance();
+        private static PersonRepository PersonRepository { get; } = PersonRepository.GetInstance();
         
-        // создание человека 
         public static void CreatePerson(Person person)
         {
-            _personRepository.CreatePerson(person);
+            Log.Information("Person Service: Create Person");
+            PersonRepository.CreatePerson(person);
             var persons = GetAllPerson();
             var idPerson = persons.FirstOrDefault(p => p.Lastname == person.Lastname && p.Firstname == person.Firstname && p.Surname == person.Surname).Id;
             RoleInTreeService.CreateRoleInTree(idPerson);
         }
 
-        // список имен всех людей
         public static List<string> GetAllNamesPerson()
         {
-            var persons = _personRepository.GetPersons().Result;
+            Log.Information("Person Service: Get All Names Person");
+            var persons = PersonRepository.GetPersons().Result;
             var names = persons
                 .Select(person => $"{person.Lastname} {person.Firstname} {person.Surname}")
                 .ToList();
             return names;
         }
 
-        // спиок имен людей, которых нет в древе
         public static List<string> GetPersonsOutsideTree()
         {
+            Log.Information("Person Service: Get Persons Outside Tree");
             var idTree = TreeService.GetCurrentTree().Id;
-            var persons = _personRepository.GetPersons().Result;
+            var persons = PersonRepository.GetPersons().Result;
             var roles = RoleInTreeService.GetRoleInTree();
             var personOutsideTree = persons
                 .Where(person => roles.Any(r => r.IdTree == idTree && r.IdTypeRoleInTree == 3 && r.IdPerson == person.Id))
@@ -41,11 +42,11 @@ namespace FamilyTree.BLL.Services
             return personOutsideTree;
         }
 
-        // список имен людей, которые есть в древе
         public static List<string> GetPersonsInTree()
         {
+            Log.Information("Person Service: Get Persons In Tree");
             var idTree = TreeService.GetCurrentTree().Id;
-            var persons = _personRepository.GetPersons().Result;
+            var persons = PersonRepository.GetPersons().Result;
             var roles = RoleInTreeService.GetRoleInTree();
             var personOutsideTree = persons
                 .Where(person => roles.Any(r => r.IdTree == idTree && r.IdTypeRoleInTree != 3 && r.IdPerson == person.Id))
@@ -54,47 +55,47 @@ namespace FamilyTree.BLL.Services
             return personOutsideTree;
         }
 
-        // получение человека по ФИО
         public static Person GetPersonByFullName(string fullName)
         {
-            string[] partsFullName = fullName.Split(' ');
+            Log.Information("Person Service: Get Person By Full Name");
+            var partsFullName = fullName.Split(' ');
             PersonFullNameDTO personDTO = new (partsFullName[0], partsFullName[1], partsFullName[2]); 
-            var persons = _personRepository.GetPersons().Result;
+            var persons = PersonRepository.GetPersons().Result;
             var person = persons
                 .FirstOrDefault(p => p.Lastname == personDTO.Lastname && p.Firstname == personDTO.Firstname && p.Surname == personDTO.Surname);
             return person;
         }
 
-        // получение человека по id
         public static Person GetPersonById(int id)
         {
-            var persons = _personRepository.GetPersons().Result;
+            Log.Information("Person Service: Get Person By Id");
+            var persons = PersonRepository.GetPersons().Result;
             var person = persons.FirstOrDefault(p => p.Id == id);
             return person;
         }
 
-        // Возраст предка при рождении ребенка
         public static int GetAgeAncestor(string fullnameAncestor, string fullnameDescendant)
         {
+            Log.Information("Person Service: Get Age Ancestor");
             var personAncestor = GetPersonByFullName(fullnameAncestor).Birthday;
             var personDescendant = GetPersonByFullName(fullnameDescendant).Birthday;
-            DateTime birthdayAncestor = DateTime.ParseExact(personAncestor, "yyyy-MM-dd", CultureInfo.InvariantCulture);
-            DateTime birthdayDescendant = DateTime.ParseExact(personDescendant, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+            var birthdayAncestor = DateTime.ParseExact(personAncestor, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+            var birthdayDescendant = DateTime.ParseExact(personDescendant, "yyyy-MM-dd", CultureInfo.InvariantCulture);
             return (birthdayDescendant.Year - birthdayAncestor.Year);
         }
         
-        // Получение корня древа
         public static Person GetRootPerson()
         {
+            Log.Information("Person Service: Get Root Person");
             var currentTree = TreeService.GetCurrentTree();
-            var persons = _personRepository.GetPersons().Result;
+            var persons = PersonRepository.GetPersons().Result;
             return persons.FirstOrDefault(p => p.Id == currentTree.IdPerson);
         }
 
-        // Список всех людей
         public static List<Person> GetAllPerson()
         {
-            return _personRepository.GetPersons().Result;
+            Log.Information("Person Service: Get All Person");
+            return PersonRepository.GetPersons().Result;
         }
     }
 }

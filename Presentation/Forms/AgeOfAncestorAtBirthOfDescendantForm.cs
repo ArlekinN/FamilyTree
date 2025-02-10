@@ -1,10 +1,12 @@
 ﻿using FamilyTree.BLL.Services;
+using FamilyTree.Presentation.Models;
 
 namespace FamilyTree.Presentation
 {
     public partial class AgeOfAncestorAtBirthOfDescendantForm : Form
     {
         private readonly MainForm _mainForm;
+        private MessagesForms MessagesForms { get; } = ManagerJsonFiles.GetData<MessagesForms>(PathsFiles.MessagesForms);
         public AgeOfAncestorAtBirthOfDescendantForm(MainForm mainForm)
         {
             InitializeComponent();
@@ -52,7 +54,7 @@ namespace FamilyTree.Presentation
             }
             else
             {
-                labelAge.Text = "Поля не должны быть пустыми";
+                labelAge.Text = MessagesForms.EmptyFiledError;
                 labelAge.ForeColor = Color.Red;
                 labelAge.Visible = true;
             }

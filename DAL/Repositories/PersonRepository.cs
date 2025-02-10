@@ -1,6 +1,7 @@
 ﻿using FamilyTree.DAL.Models;
 using Microsoft.Data.Sqlite;
 using SQLitePCL;
+using Serilog;
 
 namespace FamilyTree.DAL.Repositories
 {
@@ -10,20 +11,16 @@ namespace FamilyTree.DAL.Repositories
         private PersonRepository() { }
         public static PersonRepository GetInstance()
         {
-            if (Instance == null)
-            {
-                Instance = new PersonRepository();
-            }
+            Instance ??= new PersonRepository();
             return Instance;
         }
-
-        // создание человека
         public async void CreatePerson(Person person)
         {
+            Log.Information("Person Repository: Create Person");
             Batteries.Init();
-            using var connection = new SqliteConnection(ConnectionString);
+            var connection = new SqliteConnection(ConnectionString);
             await connection.OpenAsync();
-            using var command = new SqliteCommand(@"
+            var command = new SqliteCommand(@"
                 INSERT INTO Person(Lastname, Firstname, Surname, Birthday, Gender)
                 VALUES(@lastname, @firstname, @surname, @birthday, @gender)", connection);
             command.Parameters.AddWithValue("@lastname", person.Lastname);
@@ -34,15 +31,14 @@ namespace FamilyTree.DAL.Repositories
             await command.ExecuteNonQueryAsync();
         }
 
-        // список людей
         public async Task<List<Person>> GetPersons()
         {
+            Log.Information("Person Repository: Get Person");
             var persons = new List<Person>();
             Batteries.Init();
             using var connection = new SqliteConnection(ConnectionString);
             await connection.OpenAsync();
-            SqliteCommand command = new() { Connection = connection };
-            command.CommandText = @"select * from Person";
+            var command = new SqliteCommand(@"select * from Person", connection );
             using (var reader = await command.ExecuteReaderAsync())
             {
                 while (reader.Read())

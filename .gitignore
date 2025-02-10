@@ -82,6 +82,7 @@ _TeamCity*
 
 # Installshield output folder
 [Ee]xpress/
+[Ll]og/
 
 # DocProject is a documentation generator add-in
 DocProject/buildhelp/

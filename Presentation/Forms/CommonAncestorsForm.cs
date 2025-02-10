@@ -1,10 +1,12 @@
 ﻿using FamilyTree.BLL.Services;
+using FamilyTree.Presentation.Models;
 
 namespace FamilyTree.Presentation
 {
     public partial class CommonAncestorsForm : Form
     {
         private readonly MainForm _mainForm;
+        private MessagesForms MessagesForms { get; } = ManagerJsonFiles.GetData<MessagesForms>(PathsFiles.MessagesForms);
         public CommonAncestorsForm(MainForm mainForm)
         {
             InitializeComponent();
@@ -33,7 +35,7 @@ namespace FamilyTree.Presentation
             {
                 if (person1 == person2)
                 {
-                    labelCommonAncestors.Text = "Выбран один и тот же человек";
+                    labelCommonAncestors.Text = MessagesForms.SamePersonSelected;
                     labelCommonAncestors.ForeColor = Color.Red;
                     labelCommonAncestors.Visible = true;
                 }
@@ -46,7 +48,7 @@ namespace FamilyTree.Presentation
                         .ToList();
                     if(commonAncestors.Count == 0)
                     {
-                        labelCommonAncestors.Text = "Общих предков нет";
+                        labelCommonAncestors.Text = MessagesForms.NoCommonAncestors;
                         labelCommonAncestors.ForeColor = Color.Black;
                         labelCommonAncestors.Visible = true;
                     }
@@ -69,7 +71,7 @@ namespace FamilyTree.Presentation
                                 result += $"{names[i]}, ";
                             }
                         }
-                        labelCommonAncestors.Text = "Общие предки: ";
+                        labelCommonAncestors.Text = MessagesForms.ListOfCommonAncestors;
                         labelCommonAncestors.ForeColor = Color.Black;
                         labelCommonAncestors.Visible = true;
                         labelResult.Text = result;
@@ -79,7 +81,7 @@ namespace FamilyTree.Presentation
             }
             else
             {
-                labelCommonAncestors.Text = "Поля не должны быть пустыми";
+                labelCommonAncestors.Text = MessagesForms.EmptyFiledError;
                 labelCommonAncestors.ForeColor = Color.Red;
                 labelCommonAncestors.Visible = true;
             }

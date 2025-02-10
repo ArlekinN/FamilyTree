@@ -1,0 +1,7 @@
+{
+    "Successfully": "Успешно",
+    "EmptyFiledError": "Пустое поле",
+    "SamePersonSelected": "Выбран один и тот же человек",
+    "NoCommonAncestors": "Общих предков нет",
+    "ListOfCommonAncestors": "Общие предки: "
+}

@@ -14,8 +14,6 @@ namespace FamilyTree.DAL
                 Seed();
             }
         }
-
-        // создание таблиц
         private static void CreateDatabase()
         {
             Batteries.Init();
@@ -66,8 +64,6 @@ namespace FamilyTree.DAL
             FOREIGN KEY (IdTree) REFERENCES Tree(Id) ON DELETE CASCADE);";
             command.ExecuteNonQueryAsync().GetAwaiter().GetResult();
         }
-
-        // заполнение таблиц
         private static void Seed()
         {
             Batteries.Init();

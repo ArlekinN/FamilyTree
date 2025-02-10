@@ -1,5 +1,6 @@
 ﻿using FamilyTree.DAL.Models;
 using Microsoft.Data.Sqlite;
+using Serilog;
 using SQLitePCL;
 
 namespace FamilyTree.DAL.Repositories
@@ -10,20 +11,17 @@ namespace FamilyTree.DAL.Repositories
         private RoleInTreeRepository() { }
         public static RoleInTreeRepository GetInstance()
         {
-            if (Instance == null)
-            {
-                Instance = new RoleInTreeRepository();
-            }
+            Instance ??= new RoleInTreeRepository();
             return Instance;
         }
 
-        // создание новой роли для человека в дереве
         public async void CreateRoleInTree(RoleInTree roleInTree)
         {
+            Log.Information("Role In Tree Repository: Create Role In Tree");
             Batteries.Init();
-            using var connection = new SqliteConnection(ConnectionString);
+            var connection = new SqliteConnection(ConnectionString);
             await connection.OpenAsync();
-            using var command = new SqliteCommand(@"
+            var command = new SqliteCommand(@"
                 INSERT INTO RoleInTree(IdPerson, IdTree, IdTypeRoleInTree)
                 VALUES(@idPerson, @idTree, @idTypeRoleInTree)", connection);
             command.Parameters.AddWithValue("@idPerson", roleInTree.IdPerson);
@@ -32,15 +30,14 @@ namespace FamilyTree.DAL.Repositories
             await command.ExecuteNonQueryAsync();
         }
 
-        // список всез ролей
         public async Task<List<RoleInTree>> GetRoleInTree()
         {
+            Log.Information("Role In Tree Repository: Get Role In Tree");
             var roles = new List<RoleInTree>();
             Batteries.Init();
-            using var connection = new SqliteConnection(ConnectionString);
+            var connection = new SqliteConnection(ConnectionString);
             await connection.OpenAsync();
-            SqliteCommand command = new() { Connection = connection };
-            command.CommandText = @"select * from RoleInTree";
+            var command = new SqliteCommand(@"select * from RoleInTree", connection );
             using (var reader = await command.ExecuteReaderAsync())
             {
                 while (reader.Read())
@@ -58,13 +55,13 @@ namespace FamilyTree.DAL.Repositories
             return roles;
         }
 
-        // изменение роли человека 
         public async void ChangeRolePerson(int idPerson, int idTree, int idTypeRoleInTree)
         {
+            Log.Information("Role In Tree Repository: Change Role Person");
             Batteries.Init();
-            using var connection = new SqliteConnection(ConnectionString);
+            var connection = new SqliteConnection(ConnectionString);
             await connection.OpenAsync();
-            using var command = new SqliteCommand(@"
+            var command = new SqliteCommand(@"
                     UPDATE RoleInTree
                     SET IdTypeRoleInTree = @idTypeRoleInTree
                     WHERE IdPerson=@idPerson and idTree=@idTree", connection);
@@ -74,13 +71,13 @@ namespace FamilyTree.DAL.Repositories
             await command.ExecuteNonQueryAsync();
         }
 
-        // создание роли 
         public async void CreateRole(RoleInTree roleInTree)
         {
+            Log.Information("Role In Tree Repository: Create Role");
             Batteries.Init();
-            using var connection = new SqliteConnection(ConnectionString);
+            var connection = new SqliteConnection(ConnectionString);
             await connection.OpenAsync();
-            using var command = new SqliteCommand(@"
+            var command = new SqliteCommand(@"
                 INSERT INTO RoleInTree(IdPerson, IdTree, IdTypeRoleInTree)
                 VALUES(@idPerson, @idTree, @idTypeRoleInTree)", connection);
             command.Parameters.AddWithValue("@idPerson", roleInTree.IdPerson);
@@ -89,16 +86,15 @@ namespace FamilyTree.DAL.Repositories
             await command.ExecuteNonQueryAsync();
         }
 
-        // удалить роли у древа
         public async void DeleteRolesInTree(int idTree)
         {
+            Log.Information("Role In Tree Repository: Delete Roles In Tree");
             var relationships = new List<Relationship>();
             Batteries.Init();
-            using var connection = new SqliteConnection(ConnectionString);
+            var connection = new SqliteConnection(ConnectionString);
             await connection.OpenAsync();
-            SqliteCommand command = new() { Connection = connection };
-            command.CommandText = @"delete from RoleInTree
-                    where IdTree=@id";
+            var  command = new SqliteCommand(@"delete from RoleInTree
+                    where IdTree=@id", connection );
             command.Parameters.AddWithValue("@id", idTree);
             await command.ExecuteNonQueryAsync();
         }

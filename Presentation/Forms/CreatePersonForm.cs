@@ -1,11 +1,13 @@
 ﻿using FamilyTree.BLL.Services;
 using FamilyTree.DAL.Models;
+using FamilyTree.Presentation.Models;
 
 namespace FamilyTree.Presentation
 {
     public partial class CreatePersonForm : Form
     {
         private readonly MainForm _mainForm;
+        private MessagesForms MessagesForms { get; } = ManagerJsonFiles.GetData<MessagesForms>(PathsFiles.MessagesForms);
         public CreatePersonForm(MainForm mainForm)
         {
             InitializeComponent();
@@ -34,13 +36,13 @@ namespace FamilyTree.Presentation
                 Person person = new(lastname, firstname, surname, birthday, gender, 3);
                 PersonService.CreatePerson(person);
                 labelResult.ForeColor = Color.Green;
-                labelResult.Text = "Успешно";
+                labelResult.Text = MessagesForms.Successfully;
                 labelResult.Visible = true;
             }
             else
             {
                 labelResult.ForeColor = Color.Red;
-                labelResult.Text = "Поля не должны быть пустыми";
+                labelResult.Text = MessagesForms.EmptyFiledError;
                 labelResult.Visible = true;
             }
         }

@@ -1,10 +1,12 @@
 ﻿using FamilyTree.BLL.Services;
+using FamilyTree.Presentation.Models;
 
 namespace FamilyTree.Presentation
 {
     public partial class CreateTreeForm : Form
     {
         private readonly MainForm _mainForm;
+        private MessagesForms MessagesForms { get; } = ManagerJsonFiles.GetData<MessagesForms>(PathsFiles.MessagesForms);
         public CreateTreeForm(MainForm mainForm)
         {
             InitializeComponent();
@@ -36,14 +38,14 @@ namespace FamilyTree.Presentation
                 TreeService.CreateTree(newRootTree);
                 RoleInTreeService.CreateRoleRoot(newRootTree);
                 labelResult.ForeColor = Color.Green;
-                labelResult.Text = "Успешно";
+                labelResult.Text = MessagesForms.Successfully;
                 labelResult.Visible = true;
                 _mainForm.LoadDataRootTree();
             }
             else
             {
                 labelResult.ForeColor = Color.Red;
-                labelResult.Text = "Поле не должно быть пустым";
+                labelResult.Text = MessagesForms.EmptyFiledError;
                 labelResult.Visible = true;
             }
         }

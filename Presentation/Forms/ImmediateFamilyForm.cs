@@ -1,10 +1,12 @@
 ﻿using FamilyTree.BLL.Services;
+using FamilyTree.Presentation.Models;
 
 namespace FamilyTree.Presentation
 {
     public partial class ImmediateFamilyForm : Form
     {
         private MainForm _mainForm;
+        private MessagesForms MessagesForms { get; } = ManagerJsonFiles.GetData<MessagesForms>(PathsFiles.MessagesForms);
         public ImmediateFamilyForm(MainForm mainForm)
         {
             InitializeComponent();
@@ -87,7 +89,7 @@ namespace FamilyTree.Presentation
             else
             {
                 labelParents.ForeColor = Color.Red;
-                labelParents.Text = "Ячейка не должна быть пустой";
+                labelParents.Text = MessagesForms.EmptyFiledError;
                 labelParents.Visible = true;
             }
         }

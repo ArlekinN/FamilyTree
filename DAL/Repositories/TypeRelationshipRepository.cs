@@ -1,5 +1,6 @@
 ﻿using FamilyTree.DAL.Models;
 using Microsoft.Data.Sqlite;
+using Serilog;
 using SQLitePCL;
 namespace FamilyTree.DAL.Repositories
 {
@@ -9,22 +10,18 @@ namespace FamilyTree.DAL.Repositories
         private TypeRelationshipRepository() { }
         public static TypeRelationshipRepository GetInstance()
         {
-            if (Instance == null)
-            {
-                Instance = new TypeRelationshipRepository();
-            }
+            Instance ??= new TypeRelationshipRepository();
             return Instance;
         }
 
-        // список типов отношений
         public async Task<List<TypeRelationship>> GetRelationships()
         {
+            Log.Information("Type Relationship Repository: Get Relationships");
             var typesRelationship = new List<TypeRelationship>();
             Batteries.Init();
-            using var connection = new SqliteConnection(ConnectionString);
+            var connection = new SqliteConnection(ConnectionString);
             await connection.OpenAsync();
-            SqliteCommand command = new() { Connection = connection };
-            command.CommandText = @"select * from TypeRelationship";
+            var command = new SqliteCommand(@"select * from TypeRelationship", connection );
             using (var reader = await command.ExecuteReaderAsync())
             {
                 while (reader.Read())

@@ -1,5 +1,6 @@
 ﻿using FamilyTree.DAL.Models;
 using Microsoft.Data.Sqlite;
+using Serilog;
 using SQLitePCL;
 
 namespace FamilyTree.DAL.Repositories
@@ -10,22 +11,18 @@ namespace FamilyTree.DAL.Repositories
         private TreeRepository() { }
         public static TreeRepository GetInstance()
         {
-            if (Instance == null)
-            {
-                Instance = new TreeRepository();
-            }
+            Instance ??= new TreeRepository();
             return Instance;
         }
 
-        // список всех деревьев
         public async Task<List<Tree>> GetTrees()
         {
+            Log.Information("Tree Repository: Get Trees");
             var trees = new List<Tree>();
             Batteries.Init();
-            using var connection = new SqliteConnection(ConnectionString);
+            var connection = new SqliteConnection(ConnectionString);
             await connection.OpenAsync();
-            SqliteCommand command = new() { Connection = connection };
-            command.CommandText = @"select * from Tree";
+            var command = new SqliteCommand(@"select * from Tree", connection );
             using (var reader = await command.ExecuteReaderAsync())
             {
                 while (reader.Read())
@@ -42,16 +39,15 @@ namespace FamilyTree.DAL.Repositories
             return trees;
         }
 
-        // изменение текущего древа
         public async void ChangeCurrentTree(int id)
         {
+            Log.Information("Tree Repository: Change Current Tree");
             Batteries.Init();
             using var connection = new SqliteConnection(ConnectionString);
             await connection.OpenAsync();
-            SqliteCommand command = new() { Connection = connection };
-            command.CommandText = @"
+            var command = new SqliteCommand(@"
                     UPDATE Tree
-                    SET CurrentTree = false";
+                    SET CurrentTree = false", connection );
             await command.ExecuteNonQueryAsync();
             
             command = new SqliteCommand(@"
@@ -62,44 +58,42 @@ namespace FamilyTree.DAL.Repositories
             await command.ExecuteNonQueryAsync();
         }
 
-        // изменение корня текущего древа
         public async void ChangeRootCurrentTree(int id)
         {
+            Log.Information("Tree Repository: Change Root Current Tree");
             Batteries.Init();
-            using var connection = new SqliteConnection(ConnectionString);
+            var connection = new SqliteConnection(ConnectionString);
             await connection.OpenAsync();
-            SqliteCommand command = new() { Connection = connection };
-            command = new SqliteCommand(@"
+            var command = new SqliteCommand(@"
                     UPDATE Tree
                     SET IdPerson = @id
-                    Where CurrentTree = true", connection);
+                    Where CurrentTree = true", connection );
             command.Parameters.AddWithValue("@id", id);
             await command.ExecuteNonQueryAsync();
         }
 
-        // создание нового древа
         public async void CreateTree(int id)
         {
+            Log.Information("Tree Repository: Create Tree");
             Batteries.Init();
-            using var connection = new SqliteConnection(ConnectionString);
+            var connection = new SqliteConnection(ConnectionString);
             await connection.OpenAsync();
-            using var command = new SqliteCommand(@"
+            var command = new SqliteCommand(@"
                 INSERT INTO Tree(idPerson, CurrentTree)
                 VALUES(@idPerson,false)", connection);
             command.Parameters.AddWithValue("@idPerson", id);
             await command.ExecuteNonQueryAsync();
         }
 
-        // удаление древа
         public async void DeleteTree(int id)
         {
+            Log.Information("Tree Repository: Delete Tree");
             var relationships = new List<Relationship>();
             Batteries.Init();
-            using var connection = new SqliteConnection(ConnectionString);
+            var connection = new SqliteConnection(ConnectionString);
             await connection.OpenAsync();
-            SqliteCommand command = new() { Connection = connection };
-            command.CommandText = @"delete from Tree
-                    where Id=@id";
+            var command = new SqliteCommand(@"delete from Tree
+                    where Id=@id", connection );
             command.Parameters.AddWithValue("@id", id);
             await command.ExecuteNonQueryAsync();
         }

@@ -1,26 +1,27 @@
 ﻿using FamilyTree.DAL.Repositories;
 using FamilyTree.DAL.Models;
+using Serilog;
 
 namespace FamilyTree.BLL.Services
 {
     public class TypeRelationshipService
     {
-        private static readonly TypeRelationshipRepository _typeRelationshipRepository = TypeRelationshipRepository.GetInstance();
+        private static TypeRelationshipRepository TypeRelationshipRepository { get; } = TypeRelationshipRepository.GetInstance();
         
-        // список названий отношений
         public static List<string> GetTitleRelationship()
         {
-            var listRelationship = _typeRelationshipRepository.GetRelationships().Result;
+            Log.Information("Type Relationship Service: Get Title Relationship");
+            var listRelationship = TypeRelationshipRepository.GetRelationships().Result;
             var listTitleRelationship = listRelationship
                 .Select(r => r.Title)
                 .ToList();
             return listTitleRelationship;
         }
 
-        // список отношений
         public static List<TypeRelationship> GetRelationships()
         {
-            return _typeRelationshipRepository.GetRelationships().Result;
+            Log.Information("Type Relationship Service: Get Relationships");
+            return TypeRelationshipRepository.GetRelationships().Result;
         }
     }
 }

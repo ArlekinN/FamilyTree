@@ -6,7 +6,7 @@ namespace FamilyTree.Common
     {
         public static string GetPath([CallerFilePath] string callerFilePath = "")
         {
-            return Directory.GetParent(Path.GetDirectoryName(callerFilePath)).Parent.FullName;
+            return Directory.GetParent(Path.GetDirectoryName(callerFilePath)).FullName;
         }
     }
 }

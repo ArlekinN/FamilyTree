@@ -1,28 +1,29 @@
 ﻿using FamilyTree.DAL.Repositories;
 using FamilyTree.DAL.Models;
 using FamilyTree.BLL.DTO;
+using Serilog;
 
 namespace FamilyTree.BLL.Services
 {
     public class RoleInTreeService
     {
-        private static readonly RoleInTreeRepository _roleInTreeRepository = RoleInTreeRepository.GetInstance();
+        private static RoleInTreeRepository RoleInTreeRepository { get; } = RoleInTreeRepository.GetInstance();
 
-        // создание роли для человека во всех деревьях
         public static void CreateRoleInTree(int idPerson)
         {
+            Log.Information("Role In Tree Relationship Service: Create Role In Tree");
             var idTrees = TreeService.GetTreesWithID();
             foreach (var idTree in idTrees)
             {
                 var newRoleInTree = new RoleInTree(idPerson, idTree.Id, 3);
-                _roleInTreeRepository.CreateRoleInTree(newRoleInTree);
+                RoleInTreeRepository.CreateRoleInTree(newRoleInTree);
             }
         }
 
-        // список ролей
         public static List<RoleInTreeDTO> GetRoleInTree()
         {
-            var roles =  _roleInTreeRepository.GetRoleInTree().Result;
+            Log.Information("Role In Tree Relationship Service: Get Role In Tree");
+            var roles =  RoleInTreeRepository.GetRoleInTree().Result;
             return roles
                .Select(p => new RoleInTreeDTO
                {
@@ -33,32 +34,32 @@ namespace FamilyTree.BLL.Services
                .ToList();
         }
 
-        // изменение роли человека в древе
         public static void ChangeRolePerson(int idPerson, int idTree, int idTypeRoleInTree)
         {
-            _roleInTreeRepository.ChangeRolePerson(idPerson, idTree, idTypeRoleInTree);
+            Log.Information("Role In Tree Relationship Service: Change Role Person");
+            RoleInTreeRepository.ChangeRolePerson(idPerson, idTree, idTypeRoleInTree);
         }
 
-        // Создать новый корень и заполнить для других людей, что их нет в этом древе
         public static void CreateRoleRoot(string fullname)
         {
+            Log.Information("Role In Tree Relationship Service: Create Role Root");
             var idTree = TreeService.GetCurrentTree().Id;
             var person = PersonService.GetPersonByFullName(fullname);
-            _roleInTreeRepository.CreateRole(new RoleInTree(person.Id, idTree, 1));
+            RoleInTreeRepository.CreateRole(new RoleInTree(person.Id, idTree, 1));
             var persons = PersonService.GetAllPerson();
             foreach (var item in persons)
             {
                 if(item.Id != person.Id)
                 {
-                    _roleInTreeRepository.CreateRole(new RoleInTree(item.Id, idTree, 3));
+                    RoleInTreeRepository.CreateRole(new RoleInTree(item.Id, idTree, 3));
                 }  
             }
         }
 
-        // удалить все роли у древа
         public static void DeleteRolesInTree(int id)
         {
-            _roleInTreeRepository.DeleteRolesInTree(id);
+            Log.Information("Role In Tree Relationship Service: Delete Roles In Tree");
+            RoleInTreeRepository.DeleteRolesInTree(id);
         }
     }
 }

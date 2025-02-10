@@ -53,8 +53,7 @@ namespace FamilyTree.Presentation
                 var childNode = new TreeNode(child.GetInfoForTree());
                 node.Nodes.Add(childNode);
                 BuildChildNodes(childNode, child, persons, relationships);
-            }
-            
+            }  
         }
     }
 }
